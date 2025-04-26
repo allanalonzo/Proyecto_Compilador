@@ -27,7 +27,6 @@ def compile_code():
             'column': tok.lexpos
         })
 
-    # 4) Prepara la lista de errores a devolver
     errors = lex_errors.copy()
 
     return jsonify(tokens=tokens, errors=errors)
