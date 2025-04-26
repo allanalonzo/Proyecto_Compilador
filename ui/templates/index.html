@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Proyecto Compiladores</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<script src="{{ url_for('static', filename='js/interface.js') }}"></script>
 </head>
 <body>
     <div id="toolbar">
@@ -24,14 +23,20 @@
             <textarea id="code-input" placeholder="Escribe tu código aquí..."></textarea>
         </div>
         <div id="sidebar">
-            <h3>Tabla de Tokens</h3>
-            <table id="tokens-table">
-                <thead><tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr></thead>
-                <tbody></tbody>
-            </table>
+            <!-- la tabla -->
+        <h3>Tabla de Tokens</h3>
+        <table id="tokens-table">
+        <thead>
+            <tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+
         </div>
     </div>
     <div id="errors">Salida de errores</div>
+
+    <script src="{{ url_for('static', filename='js/interface.js') }}"></script>
 
 </body>
 </html>

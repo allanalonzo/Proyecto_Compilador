@@ -4,8 +4,8 @@ tokens = [
     'ID',
     'INT_CONST',
     'FLOAT_CONST',
-    'PLUS',
-    'MINUS',
+    'SUMA',
+    'RESTA',
     'MULT',
     'DIV',
     'MOD',
@@ -18,12 +18,12 @@ tokens = [
     'AND',
     'OR',
     'NOT',
-    'LPAREN',
-    'RPAREN',
-    'LBRACE',
-    'RBRACE',
-    'SEMI',
-    'COMMA',
+    'IZQ_PAREN',
+    'DER_PAREN',
+    'IZQ_BRACE',
+    'DER_BRACE',
+    'PUNTO_COMA',
+    'COMA',
 ]
 
 reserved = {
@@ -38,8 +38,8 @@ reserved = {
 
 tokens += list(reserved.values())
 
-t_PLUS    = r'\+'
-t_MINUS   = r'-'
+t_SUMA    = r'\+'
+t_RESTA   = r'-'
 t_MULT    = r'\*'
 t_DIV     = r'/'
 t_MOD     = r'%'
@@ -52,12 +52,12 @@ t_GE      = r'>='
 t_AND     = r'&&'
 t_OR      = r'\|\|'
 t_NOT     = r'!'
-t_LPAREN  = r'\('
-t_RPAREN  = r'\)'
-t_LBRACE  = r'\{'
-t_RBRACE  = r'\}'
-t_SEMI    = r';'
-t_COMMA   = r','
+t_IZQ_PAREN  = r'\('
+t_DER_PAREN  = r'\)'
+t_IZQ_BRACE  = r'\{'
+t_DER_BRACE  = r'\}'
+t_PUNTO_COMA    = r';'
+t_COMA   = r','
 
 def t_FLOAT_CONST(t):
     r'\d+\.\d+'
@@ -89,8 +89,12 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+lex_errors = []                 
 def t_error(t):
-    print(f"Error lexico: entrada no renocida '{t.value[0]}' en línea {t.lineno}")
+    lex_errors.append(
+        f"Error léxico: carácter ilegal '{t.value[0]}' "
+        f"en línea {t.lineno}, posición {t.lexpos}"
+    )
     t.lexer.skip(1)
 
 lexer = lex.lex()
