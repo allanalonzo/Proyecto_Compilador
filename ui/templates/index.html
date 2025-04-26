@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Proyecto Compiladores</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="{{ url_for('static', filename='js/interface.js') }}"></script>
+</head>
+<body>
+    <div id="toolbar">
+        <input type="text" id="project-path" placeholder="Ruta o nombre del proyecto" size="40">
+        <button id="btn-save">Guardar</button>
+        <button id="btn-open">Abrir</button>
+        <button id="btn-new">Nuevo</button>
+        <button id="btn-compile">Compilar</button>
+        <button id="btn-triples">Tripletas</button>
+        <button id="btn-objcode">CodObj.</button>
+        <button id="btn-asm">Ensamblador</button>
+        <button id="btn-optimize">Optimizar</button>
+        <button id="btn-run">Ejecutar</button>
+    </div>
+    <div id="main">
+        <div id="editor">
+            <textarea id="code-input" placeholder="Escribe tu código aquí..."></textarea>
+        </div>
+        <div id="sidebar">
+            <h3>Tabla de Tokens</h3>
+            <table id="tokens-table">
+                <thead><tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div id="errors">Salida de errores</div>
+
+</body>
+</html>
