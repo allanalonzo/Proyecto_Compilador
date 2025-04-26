@@ -1,4 +1,4 @@
-const reservedTypes = ['IF','ELSE','WHILE','FOR','INT','RETURN'];
+const reservedTypes = ['IF','ELSE','WHILE','FOR','INT','RETURN','CHAR'];
 function escapeHtml(str) {
   return str.replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")

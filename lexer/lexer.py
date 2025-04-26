@@ -24,6 +24,10 @@ tokens = [
     'DER_BRACE',
     'PUNTO_COMA',
     'COMA',
+    'COMILLAS_S',
+    'ASIGNACION',
+    'COMILLAS'
+    
 ]
 
 reserved = {
@@ -58,6 +62,10 @@ t_IZQ_BRACE  = r'\{'
 t_DER_BRACE  = r'\}'
 t_PUNTO_COMA    = r';'
 t_COMA   = r','
+t_COMILLAS_S = r'\''
+t_ASIGNACION = r'='
+t_COMILLAS = r'\"'
+
 
 def t_FLOAT_CONST(t):
     r'\d+\.\d+'
