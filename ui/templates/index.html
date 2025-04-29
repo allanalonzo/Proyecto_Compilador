@@ -12,11 +12,7 @@
         <button id="btn-open">Abrir</button>
         <button id="btn-new">Nuevo</button>
         <button id="btn-compile">Compilar</button>
-        <button id="btn-triples">Tripletas</button>
-        <button id="btn-objcode">CodObj.</button>
-        <button id="btn-asm">Ensamblador</button>
-        <button id="btn-optimize">Optimizar</button>
-        <button id="btn-run">Ejecutar</button>
+        <button id="btn-show-ast">Mostrar AST</button>
     </div>
     <div id="main">
         <div id="editor">
@@ -34,6 +30,17 @@
         </div>
     </div>
     <div id="errors">Salida de errores</div>
+
+    <div id="ast-modal" class="modal hidden">
+        <div class="modal-content">
+        <span id="close-ast" class="close">&times;</span>
+        <div id="ast-container"></div>
+        <button id="btn-download-ast">Exportar SVG</button>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/viz.js@2.1.2/viz.js"></script>
+    <script src="https://unpkg.com/viz.js@2.1.2/full.render.js"></script>
 
     <script src="{{ url_for('static', filename='js/interface.js') }}"></script>
 
