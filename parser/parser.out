@@ -1,0 +1,776 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    AND
+    CHAR
+    COMA
+    COMILLAS
+    COMILLAS_S
+    EQ
+    FLOAT
+    GE
+    GT
+    LE
+    LT
+    MOD
+    NEQ
+    NOT
+    OR
+    RETURN
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> lista_sentencias
+Rule 2     lista_sentencias -> lista_sentencias sentencia
+Rule 3     lista_sentencias -> sentencia
+Rule 4     sentencia -> INT ID PUNTO_COMA
+Rule 5     sentencia -> INT ID ASIGNACION expr PUNTO_COMA
+Rule 6     sentencia -> ID ASIGNACION expr PUNTO_COMA
+Rule 7     sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia
+Rule 8     sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+Rule 9     sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia
+Rule 10    sentencia -> IZQ_BRACE lista_sentencias DER_BRACE
+Rule 11    expr -> expr SUMA termino
+Rule 12    expr -> expr RESTA termino
+Rule 13    termino -> termino MULT factor
+Rule 14    termino -> termino DIV factor
+Rule 15    expr -> termino
+Rule 16    termino -> factor
+Rule 17    factor -> INT_CONST
+Rule 18    factor -> FLOAT_CONST
+Rule 19    factor -> ID
+Rule 20    factor -> IZQ_PAREN expr DER_PAREN
+
+Terminals, with rules where they appear
+
+AND                  : 
+ASIGNACION           : 5 6
+CHAR                 : 
+COMA                 : 
+COMILLAS             : 
+COMILLAS_S           : 
+DER_BRACE            : 10
+DER_PAREN            : 7 8 9 20
+DIV                  : 14
+ELSE                 : 8
+EQ                   : 
+FLOAT                : 
+FLOAT_CONST          : 18
+GE                   : 
+GT                   : 
+ID                   : 4 5 6 19
+IF                   : 7 8
+INT                  : 4 5
+INT_CONST            : 17
+IZQ_BRACE            : 10
+IZQ_PAREN            : 7 8 9 20
+LE                   : 
+LT                   : 
+MOD                  : 
+MULT                 : 13
+NEQ                  : 
+NOT                  : 
+OR                   : 
+PUNTO_COMA           : 4 5 6
+RESTA                : 12
+RETURN               : 
+SUMA                 : 11
+WHILE                : 9
+error                : 
+
+Nonterminals, with rules where they appear
+
+expr                 : 5 6 7 8 9 11 12 20
+factor               : 13 14 16
+lista_sentencias     : 1 2 10
+program              : 0
+sentencia            : 2 3 7 8 8 9
+termino              : 11 12 13 14 15
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . lista_sentencias
+    (2) lista_sentencias -> . lista_sentencias sentencia
+    (3) lista_sentencias -> . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    program                        shift and go to state 1
+    lista_sentencias               shift and go to state 2
+    sentencia                      shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> lista_sentencias .
+    (2) lista_sentencias -> lista_sentencias . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    $end            reduce using rule 1 (program -> lista_sentencias .)
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    sentencia                      shift and go to state 9
+
+state 3
+
+    (3) lista_sentencias -> sentencia .
+
+    INT             reduce using rule 3 (lista_sentencias -> sentencia .)
+    ID              reduce using rule 3 (lista_sentencias -> sentencia .)
+    IF              reduce using rule 3 (lista_sentencias -> sentencia .)
+    WHILE           reduce using rule 3 (lista_sentencias -> sentencia .)
+    IZQ_BRACE       reduce using rule 3 (lista_sentencias -> sentencia .)
+    $end            reduce using rule 3 (lista_sentencias -> sentencia .)
+    DER_BRACE       reduce using rule 3 (lista_sentencias -> sentencia .)
+
+
+state 4
+
+    (4) sentencia -> INT . ID PUNTO_COMA
+    (5) sentencia -> INT . ID ASIGNACION expr PUNTO_COMA
+
+    ID              shift and go to state 10
+
+
+state 5
+
+    (6) sentencia -> ID . ASIGNACION expr PUNTO_COMA
+
+    ASIGNACION      shift and go to state 11
+
+
+state 6
+
+    (7) sentencia -> IF . IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> IF . IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+
+    IZQ_PAREN       shift and go to state 12
+
+
+state 7
+
+    (9) sentencia -> WHILE . IZQ_PAREN expr DER_PAREN sentencia
+
+    IZQ_PAREN       shift and go to state 13
+
+
+state 8
+
+    (10) sentencia -> IZQ_BRACE . lista_sentencias DER_BRACE
+    (2) lista_sentencias -> . lista_sentencias sentencia
+    (3) lista_sentencias -> . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    lista_sentencias               shift and go to state 14
+    sentencia                      shift and go to state 3
+
+state 9
+
+    (2) lista_sentencias -> lista_sentencias sentencia .
+
+    INT             reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    ID              reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    IF              reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    WHILE           reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    IZQ_BRACE       reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    $end            reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    DER_BRACE       reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+
+
+state 10
+
+    (4) sentencia -> INT ID . PUNTO_COMA
+    (5) sentencia -> INT ID . ASIGNACION expr PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 15
+    ASIGNACION      shift and go to state 16
+
+
+state 11
+
+    (6) sentencia -> ID ASIGNACION . expr PUNTO_COMA
+    (11) expr -> . expr SUMA termino
+    (12) expr -> . expr RESTA termino
+    (15) expr -> . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    expr                           shift and go to state 18
+    termino                        shift and go to state 19
+    factor                         shift and go to state 20
+
+state 12
+
+    (7) sentencia -> IF IZQ_PAREN . expr DER_PAREN sentencia
+    (8) sentencia -> IF IZQ_PAREN . expr DER_PAREN sentencia ELSE sentencia
+    (11) expr -> . expr SUMA termino
+    (12) expr -> . expr RESTA termino
+    (15) expr -> . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    expr                           shift and go to state 24
+    termino                        shift and go to state 19
+    factor                         shift and go to state 20
+
+state 13
+
+    (9) sentencia -> WHILE IZQ_PAREN . expr DER_PAREN sentencia
+    (11) expr -> . expr SUMA termino
+    (12) expr -> . expr RESTA termino
+    (15) expr -> . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    expr                           shift and go to state 25
+    termino                        shift and go to state 19
+    factor                         shift and go to state 20
+
+state 14
+
+    (10) sentencia -> IZQ_BRACE lista_sentencias . DER_BRACE
+    (2) lista_sentencias -> lista_sentencias . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    DER_BRACE       shift and go to state 26
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    sentencia                      shift and go to state 9
+
+state 15
+
+    (4) sentencia -> INT ID PUNTO_COMA .
+
+    INT             reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    ID              reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    IF              reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    WHILE           reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    $end            reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    DER_BRACE       reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    ELSE            reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+
+
+state 16
+
+    (5) sentencia -> INT ID ASIGNACION . expr PUNTO_COMA
+    (11) expr -> . expr SUMA termino
+    (12) expr -> . expr RESTA termino
+    (15) expr -> . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    expr                           shift and go to state 27
+    termino                        shift and go to state 19
+    factor                         shift and go to state 20
+
+state 17
+
+    (19) factor -> ID .
+
+    MULT            reduce using rule 19 (factor -> ID .)
+    DIV             reduce using rule 19 (factor -> ID .)
+    PUNTO_COMA      reduce using rule 19 (factor -> ID .)
+    SUMA            reduce using rule 19 (factor -> ID .)
+    RESTA           reduce using rule 19 (factor -> ID .)
+    DER_PAREN       reduce using rule 19 (factor -> ID .)
+
+
+state 18
+
+    (6) sentencia -> ID ASIGNACION expr . PUNTO_COMA
+    (11) expr -> expr . SUMA termino
+    (12) expr -> expr . RESTA termino
+
+    PUNTO_COMA      shift and go to state 28
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+
+
+state 19
+
+    (15) expr -> termino .
+    (13) termino -> termino . MULT factor
+    (14) termino -> termino . DIV factor
+
+    PUNTO_COMA      reduce using rule 15 (expr -> termino .)
+    SUMA            reduce using rule 15 (expr -> termino .)
+    RESTA           reduce using rule 15 (expr -> termino .)
+    DER_PAREN       reduce using rule 15 (expr -> termino .)
+    MULT            shift and go to state 31
+    DIV             shift and go to state 32
+
+
+state 20
+
+    (16) termino -> factor .
+
+    MULT            reduce using rule 16 (termino -> factor .)
+    DIV             reduce using rule 16 (termino -> factor .)
+    PUNTO_COMA      reduce using rule 16 (termino -> factor .)
+    SUMA            reduce using rule 16 (termino -> factor .)
+    RESTA           reduce using rule 16 (termino -> factor .)
+    DER_PAREN       reduce using rule 16 (termino -> factor .)
+
+
+state 21
+
+    (17) factor -> INT_CONST .
+
+    MULT            reduce using rule 17 (factor -> INT_CONST .)
+    DIV             reduce using rule 17 (factor -> INT_CONST .)
+    PUNTO_COMA      reduce using rule 17 (factor -> INT_CONST .)
+    SUMA            reduce using rule 17 (factor -> INT_CONST .)
+    RESTA           reduce using rule 17 (factor -> INT_CONST .)
+    DER_PAREN       reduce using rule 17 (factor -> INT_CONST .)
+
+
+state 22
+
+    (18) factor -> FLOAT_CONST .
+
+    MULT            reduce using rule 18 (factor -> FLOAT_CONST .)
+    DIV             reduce using rule 18 (factor -> FLOAT_CONST .)
+    PUNTO_COMA      reduce using rule 18 (factor -> FLOAT_CONST .)
+    SUMA            reduce using rule 18 (factor -> FLOAT_CONST .)
+    RESTA           reduce using rule 18 (factor -> FLOAT_CONST .)
+    DER_PAREN       reduce using rule 18 (factor -> FLOAT_CONST .)
+
+
+state 23
+
+    (20) factor -> IZQ_PAREN . expr DER_PAREN
+    (11) expr -> . expr SUMA termino
+    (12) expr -> . expr RESTA termino
+    (15) expr -> . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    expr                           shift and go to state 33
+    termino                        shift and go to state 19
+    factor                         shift and go to state 20
+
+state 24
+
+    (7) sentencia -> IF IZQ_PAREN expr . DER_PAREN sentencia
+    (8) sentencia -> IF IZQ_PAREN expr . DER_PAREN sentencia ELSE sentencia
+    (11) expr -> expr . SUMA termino
+    (12) expr -> expr . RESTA termino
+
+    DER_PAREN       shift and go to state 34
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+
+
+state 25
+
+    (9) sentencia -> WHILE IZQ_PAREN expr . DER_PAREN sentencia
+    (11) expr -> expr . SUMA termino
+    (12) expr -> expr . RESTA termino
+
+    DER_PAREN       shift and go to state 35
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+
+
+state 26
+
+    (10) sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .
+
+    INT             reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    ID              reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    IF              reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    WHILE           reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    IZQ_BRACE       reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    $end            reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    DER_BRACE       reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    ELSE            reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+
+
+state 27
+
+    (5) sentencia -> INT ID ASIGNACION expr . PUNTO_COMA
+    (11) expr -> expr . SUMA termino
+    (12) expr -> expr . RESTA termino
+
+    PUNTO_COMA      shift and go to state 36
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+
+
+state 28
+
+    (6) sentencia -> ID ASIGNACION expr PUNTO_COMA .
+
+    INT             reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+
+
+state 29
+
+    (11) expr -> expr SUMA . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    termino                        shift and go to state 37
+    factor                         shift and go to state 20
+
+state 30
+
+    (12) expr -> expr RESTA . termino
+    (13) termino -> . termino MULT factor
+    (14) termino -> . termino DIV factor
+    (16) termino -> . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    termino                        shift and go to state 38
+    factor                         shift and go to state 20
+
+state 31
+
+    (13) termino -> termino MULT . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    factor                         shift and go to state 39
+
+state 32
+
+    (14) termino -> termino DIV . factor
+    (17) factor -> . INT_CONST
+    (18) factor -> . FLOAT_CONST
+    (19) factor -> . ID
+    (20) factor -> . IZQ_PAREN expr DER_PAREN
+
+    INT_CONST       shift and go to state 21
+    FLOAT_CONST     shift and go to state 22
+    ID              shift and go to state 17
+    IZQ_PAREN       shift and go to state 23
+
+    factor                         shift and go to state 40
+
+state 33
+
+    (20) factor -> IZQ_PAREN expr . DER_PAREN
+    (11) expr -> expr . SUMA termino
+    (12) expr -> expr . RESTA termino
+
+    DER_PAREN       shift and go to state 41
+    SUMA            shift and go to state 29
+    RESTA           shift and go to state 30
+
+
+state 34
+
+    (7) sentencia -> IF IZQ_PAREN expr DER_PAREN . sentencia
+    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN . sentencia ELSE sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    sentencia                      shift and go to state 42
+
+state 35
+
+    (9) sentencia -> WHILE IZQ_PAREN expr DER_PAREN . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    sentencia                      shift and go to state 43
+
+state 36
+
+    (5) sentencia -> INT ID ASIGNACION expr PUNTO_COMA .
+
+    INT             reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+
+
+state 37
+
+    (11) expr -> expr SUMA termino .
+    (13) termino -> termino . MULT factor
+    (14) termino -> termino . DIV factor
+
+    PUNTO_COMA      reduce using rule 11 (expr -> expr SUMA termino .)
+    SUMA            reduce using rule 11 (expr -> expr SUMA termino .)
+    RESTA           reduce using rule 11 (expr -> expr SUMA termino .)
+    DER_PAREN       reduce using rule 11 (expr -> expr SUMA termino .)
+    MULT            shift and go to state 31
+    DIV             shift and go to state 32
+
+
+state 38
+
+    (12) expr -> expr RESTA termino .
+    (13) termino -> termino . MULT factor
+    (14) termino -> termino . DIV factor
+
+    PUNTO_COMA      reduce using rule 12 (expr -> expr RESTA termino .)
+    SUMA            reduce using rule 12 (expr -> expr RESTA termino .)
+    RESTA           reduce using rule 12 (expr -> expr RESTA termino .)
+    DER_PAREN       reduce using rule 12 (expr -> expr RESTA termino .)
+    MULT            shift and go to state 31
+    DIV             shift and go to state 32
+
+
+state 39
+
+    (13) termino -> termino MULT factor .
+
+    MULT            reduce using rule 13 (termino -> termino MULT factor .)
+    DIV             reduce using rule 13 (termino -> termino MULT factor .)
+    PUNTO_COMA      reduce using rule 13 (termino -> termino MULT factor .)
+    SUMA            reduce using rule 13 (termino -> termino MULT factor .)
+    RESTA           reduce using rule 13 (termino -> termino MULT factor .)
+    DER_PAREN       reduce using rule 13 (termino -> termino MULT factor .)
+
+
+state 40
+
+    (14) termino -> termino DIV factor .
+
+    MULT            reduce using rule 14 (termino -> termino DIV factor .)
+    DIV             reduce using rule 14 (termino -> termino DIV factor .)
+    PUNTO_COMA      reduce using rule 14 (termino -> termino DIV factor .)
+    SUMA            reduce using rule 14 (termino -> termino DIV factor .)
+    RESTA           reduce using rule 14 (termino -> termino DIV factor .)
+    DER_PAREN       reduce using rule 14 (termino -> termino DIV factor .)
+
+
+state 41
+
+    (20) factor -> IZQ_PAREN expr DER_PAREN .
+
+    MULT            reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+    DIV             reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+    PUNTO_COMA      reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+    SUMA            reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+    RESTA           reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+    DER_PAREN       reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+
+
+state 42
+
+    (7) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .
+    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia . ELSE sentencia
+
+    INT             reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    ID              reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    IF              reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    WHILE           reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    IZQ_BRACE       reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    $end            reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    DER_BRACE       reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    ELSE            shift and go to state 44
+
+  ! ELSE            [ reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .) ]
+
+
+state 43
+
+    (9) sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .
+
+    INT             reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    ID              reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    IF              reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    WHILE           reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    IZQ_BRACE       reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    $end            reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    DER_BRACE       reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    ELSE            reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+
+
+state 44
+
+    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    ID              shift and go to state 5
+    IF              shift and go to state 6
+    WHILE           shift and go to state 7
+    IZQ_BRACE       shift and go to state 8
+
+    sentencia                      shift and go to state 45
+
+state 45
+
+    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .
+
+    INT             reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    ID              reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    IF              reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    WHILE           reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    IZQ_BRACE       reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    $end            reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    DER_BRACE       reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    ELSE            reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+
