@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'nonassocIFXnonassocELSEleftSUMARESTAleftMULTDIVAND ASIGNACION CHAR COMA COMILLAS COMILLAS_S DER_BRACE DER_PAREN DIV ELSE EQ FLOAT FLOAT_CONST GE GT ID IF INT INT_CONST IZQ_BRACE IZQ_PAREN LE LT MOD MULT NEQ NOT OR PUNTO_COMA RESTA RETURN SUMA WHILEprogram : lista_sentenciaslista_sentencias : lista_sentencias sentencialista_sentencias : sentenciasentencia : INT ID PUNTO_COMA\n                | INT ID ASIGNACION expr PUNTO_COMAsentencia : ID ASIGNACION expr PUNTO_COMAsentencia : IF IZQ_PAREN expr DER_PAREN sentencia %prec IFX\n                 | IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentenciasentencia : WHILE IZQ_PAREN expr DER_PAREN sentenciasentencia : IZQ_BRACE lista_sentencias DER_BRACEexpr : expr SUMA termino\n            | expr RESTA terminotermino : termino MULT factor\n            | termino DIV factorexpr : terminotermino : factorfactor : INT_CONST\n              | FLOAT_CONSTfactor : IDfactor : IZQ_PAREN expr DER_PAREN'
+_lr_signature = 'nonassocIFXnonassocELSEleftORleftANDleftEQNEQleftLTGTLEGEleftSUMARESTAleftMULTDIVMODAND ASIGNACION BOOL BOOL_CONST CHAR COMA COMILLAS_S DER_BRACE DER_PAREN DIV ELSE EQ FALSE FLOAT FLOAT_CONST GE GT ID IF INT INT_CONST IZQ_BRACE IZQ_PAREN LE LT MOD MULT NEQ NOT OR PUNTO_COMA RESTA RETURN STRING STRING_CONST SUMA TRUE WHILEprogram : lista_sentenciaslista_sentencias : lista_sentencias sentencialista_sentencias : sentenciasentencia : INT ID PUNTO_COMA\n| FLOAT ID PUNTO_COMA\n| BOOL ID PUNTO_COMA\n| STRING ID PUNTO_COMA\n| INT ID ASIGNACION expr PUNTO_COMA\n| FLOAT ID ASIGNACION expr PUNTO_COMA\n| BOOL ID ASIGNACION expr PUNTO_COMA\n| STRING ID ASIGNACION expr PUNTO_COMAsentencia : ID ASIGNACION expr PUNTO_COMAsentencia : IF IZQ_PAREN expr DER_PAREN sentencia %prec IFX\n| IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentenciasentencia : WHILE IZQ_PAREN expr DER_PAREN sentenciasentencia : IZQ_BRACE lista_sentencias DER_BRACEexpr : expr SUMA expr\n| expr RESTA expr\n| expr MULT expr\n| expr DIV expr\n| expr MOD expr\n| expr EQ expr\n| expr NEQ expr\n| expr LT expr\n| expr GT expr\n| expr LE expr\n| expr GE expr\n| expr AND expr\n| expr OR exprexpr : NOT exprexpr : IZQ_PAREN expr DER_PARENexpr : INT_CONST\n| FLOAT_CONST\n| BOOL_CONST\n| STRING_CONST\n| ID'
     
-_lr_action_items = {'INT':([0,2,3,8,9,14,15,26,28,34,35,36,42,43,44,45,],[4,4,-3,4,-2,4,-4,-10,-6,4,4,-5,-7,-9,4,-8,]),'ID':([0,2,3,4,8,9,11,12,13,14,15,16,23,26,28,29,30,31,32,34,35,36,42,43,44,45,],[5,5,-3,10,5,-2,17,17,17,5,-4,17,17,-10,-6,17,17,17,17,5,5,-5,-7,-9,5,-8,]),'IF':([0,2,3,8,9,14,15,26,28,34,35,36,42,43,44,45,],[6,6,-3,6,-2,6,-4,-10,-6,6,6,-5,-7,-9,6,-8,]),'WHILE':([0,2,3,8,9,14,15,26,28,34,35,36,42,43,44,45,],[7,7,-3,7,-2,7,-4,-10,-6,7,7,-5,-7,-9,7,-8,]),'IZQ_BRACE':([0,2,3,8,9,14,15,26,28,34,35,36,42,43,44,45,],[8,8,-3,8,-2,8,-4,-10,-6,8,8,-5,-7,-9,8,-8,]),'$end':([1,2,3,9,15,26,28,36,42,43,45,],[0,-1,-3,-2,-4,-10,-6,-5,-7,-9,-8,]),'DER_BRACE':([3,9,14,15,26,28,36,42,43,45,],[-3,-2,26,-4,-10,-6,-5,-7,-9,-8,]),'ASIGNACION':([5,10,],[11,16,]),'IZQ_PAREN':([6,7,11,12,13,16,23,29,30,31,32,],[12,13,23,23,23,23,23,23,23,23,23,]),'PUNTO_COMA':([10,17,18,19,20,21,22,27,37,38,39,40,41,],[15,-19,28,-15,-16,-17,-18,36,-11,-12,-13,-14,-20,]),'INT_CONST':([11,12,13,16,23,29,30,31,32,],[21,21,21,21,21,21,21,21,21,]),'FLOAT_CONST':([11,12,13,16,23,29,30,31,32,],[22,22,22,22,22,22,22,22,22,]),'ELSE':([15,26,28,36,42,43,45,],[-4,-10,-6,-5,44,-9,-8,]),'MULT':([17,19,20,21,22,37,38,39,40,41,],[-19,31,-16,-17,-18,31,31,-13,-14,-20,]),'DIV':([17,19,20,21,22,37,38,39,40,41,],[-19,32,-16,-17,-18,32,32,-13,-14,-20,]),'SUMA':([17,18,19,20,21,22,24,25,27,33,37,38,39,40,41,],[-19,29,-15,-16,-17,-18,29,29,29,29,-11,-12,-13,-14,-20,]),'RESTA':([17,18,19,20,21,22,24,25,27,33,37,38,39,40,41,],[-19,30,-15,-16,-17,-18,30,30,30,30,-11,-12,-13,-14,-20,]),'DER_PAREN':([17,19,20,21,22,24,25,33,37,38,39,40,41,],[-19,-15,-16,-17,-18,34,35,41,-11,-12,-13,-14,-20,]),}
+_lr_action_items = {'INT':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[4,4,-3,4,-2,4,-4,-5,-6,-7,-16,-12,4,4,-8,-9,-10,-11,-13,-15,4,-14,]),'FLOAT':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[6,6,-3,6,-2,6,-4,-5,-6,-7,-16,-12,6,6,-8,-9,-10,-11,-13,-15,6,-14,]),'BOOL':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[7,7,-3,7,-2,7,-4,-5,-6,-7,-16,-12,7,7,-8,-9,-10,-11,-13,-15,7,-14,]),'STRING':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[8,8,-3,8,-2,8,-4,-5,-6,-7,-16,-12,8,8,-8,-9,-10,-11,-13,-15,8,-14,]),'ID':([0,2,3,4,6,7,8,11,12,14,18,19,20,21,22,25,26,31,32,33,34,35,36,39,41,42,43,44,45,46,47,48,49,50,51,52,53,54,60,61,62,77,78,79,80,81,82,83,],[5,5,-3,13,15,16,17,5,-2,23,23,23,5,-4,23,23,23,-5,23,-6,23,-7,23,-16,-12,23,23,23,23,23,23,23,23,23,23,23,23,23,5,5,-8,-9,-10,-11,-13,-15,5,-14,]),'IF':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[9,9,-3,9,-2,9,-4,-5,-6,-7,-16,-12,9,9,-8,-9,-10,-11,-13,-15,9,-14,]),'WHILE':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[10,10,-3,10,-2,10,-4,-5,-6,-7,-16,-12,10,10,-8,-9,-10,-11,-13,-15,10,-14,]),'IZQ_BRACE':([0,2,3,11,12,20,21,31,33,35,39,41,60,61,62,77,78,79,80,81,82,83,],[11,11,-3,11,-2,11,-4,-5,-6,-7,-16,-12,11,11,-8,-9,-10,-11,-13,-15,11,-14,]),'$end':([1,2,3,12,21,31,33,35,39,41,62,77,78,79,80,81,83,],[0,-1,-3,-2,-4,-5,-6,-7,-16,-12,-8,-9,-10,-11,-13,-15,-14,]),'DER_BRACE':([3,12,20,21,31,33,35,39,41,62,77,78,79,80,81,83,],[-3,-2,39,-4,-5,-6,-7,-16,-12,-8,-9,-10,-11,-13,-15,-14,]),'ASIGNACION':([5,13,15,16,17,],[14,22,32,34,36,]),'IZQ_PAREN':([9,10,14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[18,19,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,26,]),'PUNTO_COMA':([13,15,16,17,23,24,27,28,29,30,40,55,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[21,31,33,35,-36,41,-32,-33,-34,-35,62,-30,77,78,79,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-31,]),'NOT':([14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,]),'INT_CONST':([14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,]),'FLOAT_CONST':([14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,28,]),'BOOL_CONST':([14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,29,]),'STRING_CONST':([14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,]),'ELSE':([21,31,33,35,39,41,62,77,78,79,80,81,83,],[-4,-5,-6,-7,-16,-12,-8,-9,-10,-11,82,-15,-14,]),'SUMA':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,42,-32,-33,-34,-35,42,42,42,42,42,42,42,42,-17,-18,-19,-20,-21,42,42,42,42,42,42,42,42,-31,]),'RESTA':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,43,-32,-33,-34,-35,43,43,43,43,43,43,43,43,-17,-18,-19,-20,-21,43,43,43,43,43,43,43,43,-31,]),'MULT':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,44,-32,-33,-34,-35,44,44,44,44,44,44,44,44,44,44,-19,-20,-21,44,44,44,44,44,44,44,44,-31,]),'DIV':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,45,-32,-33,-34,-35,45,45,45,45,45,45,45,45,45,45,-19,-20,-21,45,45,45,45,45,45,45,45,-31,]),'MOD':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,46,-32,-33,-34,-35,46,46,46,46,46,46,46,46,46,46,-19,-20,-21,46,46,46,46,46,46,46,46,-31,]),'EQ':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,47,-32,-33,-34,-35,47,47,47,47,47,47,47,47,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,47,47,-31,]),'NEQ':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,48,-32,-33,-34,-35,48,48,48,48,48,48,48,48,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,48,48,-31,]),'LT':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,49,-32,-33,-34,-35,49,49,49,49,49,49,49,49,-17,-18,-19,-20,-21,49,49,-24,-25,-26,-27,49,49,-31,]),'GT':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,50,-32,-33,-34,-35,50,50,50,50,50,50,50,50,-17,-18,-19,-20,-21,50,50,-24,-25,-26,-27,50,50,-31,]),'LE':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,51,-32,-33,-34,-35,51,51,51,51,51,51,51,51,-17,-18,-19,-20,-21,51,51,-24,-25,-26,-27,51,51,-31,]),'GE':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,52,-32,-33,-34,-35,52,52,52,52,52,52,52,52,-17,-18,-19,-20,-21,52,52,-24,-25,-26,-27,52,52,-31,]),'AND':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,53,-32,-33,-34,-35,53,53,53,53,53,53,53,53,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,53,-31,]),'OR':([23,24,27,28,29,30,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,54,-32,-33,-34,-35,54,54,54,54,54,54,54,54,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-31,]),'DER_PAREN':([23,27,28,29,30,37,38,55,56,63,64,65,66,67,68,69,70,71,72,73,74,75,76,],[-36,-32,-33,-34,-35,60,61,-30,76,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-31,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'lista_sentencias':([0,8,],[2,14,]),'sentencia':([0,2,8,14,34,35,44,],[3,9,3,9,42,43,45,]),'expr':([11,12,13,16,23,],[18,24,25,27,33,]),'termino':([11,12,13,16,23,29,30,],[19,19,19,19,19,37,38,]),'factor':([11,12,13,16,23,29,30,31,32,],[20,20,20,20,20,20,20,39,40,]),}
+_lr_goto_items = {'program':([0,],[1,]),'lista_sentencias':([0,11,],[2,20,]),'sentencia':([0,2,11,20,60,61,82,],[3,12,3,12,80,81,83,]),'expr':([14,18,19,22,25,26,32,34,36,42,43,44,45,46,47,48,49,50,51,52,53,54,],[24,37,38,40,55,56,57,58,59,63,64,65,66,67,68,69,70,71,72,73,74,75,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,24 +27,40 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> lista_sentencias','program',1,'p_program','parser.py',17),
-  ('lista_sentencias -> lista_sentencias sentencia','lista_sentencias',2,'p_lista_sentencias_multiple','parser.py',21),
-  ('lista_sentencias -> sentencia','lista_sentencias',1,'p_lista_sentencias_simple','parser.py',25),
-  ('sentencia -> INT ID PUNTO_COMA','sentencia',3,'p_sentencia_declaracion','parser.py',29),
-  ('sentencia -> INT ID ASIGNACION expr PUNTO_COMA','sentencia',5,'p_sentencia_declaracion','parser.py',30),
-  ('sentencia -> ID ASIGNACION expr PUNTO_COMA','sentencia',4,'p_sentencia_asignacion','parser.py',37),
-  ('sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia','sentencia',5,'p_sentencia_if','parser.py',41),
-  ('sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia','sentencia',7,'p_sentencia_if','parser.py',42),
-  ('sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia','sentencia',5,'p_sentencia_while','parser.py',51),
-  ('sentencia -> IZQ_BRACE lista_sentencias DER_BRACE','sentencia',3,'p_sentencia_bloque','parser.py',56),
-  ('expr -> expr SUMA termino','expr',3,'p_expr_binaria','parser.py',60),
-  ('expr -> expr RESTA termino','expr',3,'p_expr_binaria','parser.py',61),
-  ('termino -> termino MULT factor','termino',3,'p_termino_binario','parser.py',65),
-  ('termino -> termino DIV factor','termino',3,'p_termino_binario','parser.py',66),
-  ('expr -> termino','expr',1,'p_expr_termino','parser.py',70),
-  ('termino -> factor','termino',1,'p_termino_factor','parser.py',74),
-  ('factor -> INT_CONST','factor',1,'p_factor_numero','parser.py',78),
-  ('factor -> FLOAT_CONST','factor',1,'p_factor_numero','parser.py',79),
-  ('factor -> ID','factor',1,'p_factor_id','parser.py',83),
-  ('factor -> IZQ_PAREN expr DER_PAREN','factor',3,'p_factor_expr','parser.py',87),
+  ('program -> lista_sentencias','program',1,'p_program','parser.py',21),
+  ('lista_sentencias -> lista_sentencias sentencia','lista_sentencias',2,'p_lista_sentencias_multiple','parser.py',25),
+  ('lista_sentencias -> sentencia','lista_sentencias',1,'p_lista_sentencias_simple','parser.py',29),
+  ('sentencia -> INT ID PUNTO_COMA','sentencia',3,'p_sentencia_declaracion','parser.py',33),
+  ('sentencia -> FLOAT ID PUNTO_COMA','sentencia',3,'p_sentencia_declaracion','parser.py',34),
+  ('sentencia -> BOOL ID PUNTO_COMA','sentencia',3,'p_sentencia_declaracion','parser.py',35),
+  ('sentencia -> STRING ID PUNTO_COMA','sentencia',3,'p_sentencia_declaracion','parser.py',36),
+  ('sentencia -> INT ID ASIGNACION expr PUNTO_COMA','sentencia',5,'p_sentencia_declaracion','parser.py',37),
+  ('sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA','sentencia',5,'p_sentencia_declaracion','parser.py',38),
+  ('sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA','sentencia',5,'p_sentencia_declaracion','parser.py',39),
+  ('sentencia -> STRING ID ASIGNACION expr PUNTO_COMA','sentencia',5,'p_sentencia_declaracion','parser.py',40),
+  ('sentencia -> ID ASIGNACION expr PUNTO_COMA','sentencia',4,'p_sentencia_asignacion','parser.py',47),
+  ('sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia','sentencia',5,'p_sentencia_if','parser.py',51),
+  ('sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia','sentencia',7,'p_sentencia_if','parser.py',52),
+  ('sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia','sentencia',5,'p_sentencia_while','parser.py',59),
+  ('sentencia -> IZQ_BRACE lista_sentencias DER_BRACE','sentencia',3,'p_sentencia_bloque','parser.py',63),
+  ('expr -> expr SUMA expr','expr',3,'p_expr_binaria','parser.py',67),
+  ('expr -> expr RESTA expr','expr',3,'p_expr_binaria','parser.py',68),
+  ('expr -> expr MULT expr','expr',3,'p_expr_binaria','parser.py',69),
+  ('expr -> expr DIV expr','expr',3,'p_expr_binaria','parser.py',70),
+  ('expr -> expr MOD expr','expr',3,'p_expr_binaria','parser.py',71),
+  ('expr -> expr EQ expr','expr',3,'p_expr_binaria','parser.py',72),
+  ('expr -> expr NEQ expr','expr',3,'p_expr_binaria','parser.py',73),
+  ('expr -> expr LT expr','expr',3,'p_expr_binaria','parser.py',74),
+  ('expr -> expr GT expr','expr',3,'p_expr_binaria','parser.py',75),
+  ('expr -> expr LE expr','expr',3,'p_expr_binaria','parser.py',76),
+  ('expr -> expr GE expr','expr',3,'p_expr_binaria','parser.py',77),
+  ('expr -> expr AND expr','expr',3,'p_expr_binaria','parser.py',78),
+  ('expr -> expr OR expr','expr',3,'p_expr_binaria','parser.py',79),
+  ('expr -> NOT expr','expr',2,'p_expr_unaria','parser.py',83),
+  ('expr -> IZQ_PAREN expr DER_PAREN','expr',3,'p_expr_group','parser.py',87),
+  ('expr -> INT_CONST','expr',1,'p_expr_atom','parser.py',91),
+  ('expr -> FLOAT_CONST','expr',1,'p_expr_atom','parser.py',92),
+  ('expr -> BOOL_CONST','expr',1,'p_expr_atom','parser.py',93),
+  ('expr -> STRING_CONST','expr',1,'p_expr_atom','parser.py',94),
+  ('expr -> ID','expr',1,'p_expr_atom','parser.py',95),
 ]

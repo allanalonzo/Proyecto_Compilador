@@ -1,16 +1,20 @@
 import ply.yacc as yacc
-from lexer.lexer import lexer, tokens      
+from lexer.lexer import lexer, tokens
 from ast_nodes import (
     Program, Declaration, Assignment,
     If, While, Block, BinaryOp,
-    Number, Identifier
+    Number, Identifier, Boolean, String
 )
 
 precedence = (
-    ('nonassoc', 'IFX'),          
+    ('nonassoc', 'IFX'),
     ('nonassoc', 'ELSE'),
-    ('left',    'SUMA', 'RESTA'),
-    ('left',    'MULT', 'DIV'),
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'EQ', 'NEQ'),
+    ('left', 'LT', 'GT', 'LE', 'GE'),
+    ('left', 'SUMA', 'RESTA'),
+    ('left', 'MULT', 'DIV', 'MOD'),
 )
 
 def p_program(p):
@@ -27,11 +31,17 @@ def p_lista_sentencias_simple(p):
 
 def p_sentencia_declaracion(p):
     '''sentencia : INT ID PUNTO_COMA
-                | INT ID ASIGNACION expr PUNTO_COMA'''
+                 | FLOAT ID PUNTO_COMA
+                 | BOOL ID PUNTO_COMA
+                 | STRING ID PUNTO_COMA
+                 | INT ID ASIGNACION expr PUNTO_COMA
+                 | FLOAT ID ASIGNACION expr PUNTO_COMA
+                 | BOOL ID ASIGNACION expr PUNTO_COMA
+                 | STRING ID ASIGNACION expr PUNTO_COMA'''
     if len(p) == 4:
-        p[0] = Declaration('int', Identifier(p[2]), None)
+        p[0] = Declaration(p[1], Identifier(p[2]), None)
     else:
-        p[0] = Declaration('int', Identifier(p[2]), p[4])
+        p[0] = Declaration(p[1], Identifier(p[2]), p[4])
 
 def p_sentencia_asignacion(p):
     'sentencia : ID ASIGNACION expr PUNTO_COMA'
@@ -54,40 +64,50 @@ def p_sentencia_bloque(p):
     p[0] = Block(p[2])
 
 def p_expr_binaria(p):
-    '''expr : expr SUMA termino
-            | expr RESTA termino'''
+    '''expr : expr SUMA expr
+            | expr RESTA expr
+            | expr MULT expr
+            | expr DIV expr
+            | expr MOD expr
+            | expr EQ expr
+            | expr NEQ expr
+            | expr LT expr
+            | expr GT expr
+            | expr LE expr
+            | expr GE expr
+            | expr AND expr
+            | expr OR expr'''
     p[0] = BinaryOp(p[2], p[1], p[3])
 
-def p_termino_binario(p):
-    '''termino : termino MULT factor
-            | termino DIV factor'''
-    p[0] = BinaryOp(p[2], p[1], p[3])
+def p_expr_unaria(p):
+    'expr : NOT expr'
+    p[0] = BinaryOp(p[1], p[2], None)
 
-def p_expr_termino(p):
-    'expr : termino'
-    p[0] = p[1]
-
-def p_termino_factor(p):
-    'termino : factor'
-    p[0] = p[1]
-
-def p_factor_numero(p):
-    '''factor : INT_CONST
-              | FLOAT_CONST'''
-    p[0] = Number(p[1])
-
-def p_factor_id(p):
-    'factor : ID'
-    p[0] = Identifier(p[1])
-
-def p_factor_expr(p):
-    'factor : IZQ_PAREN expr DER_PAREN'
+def p_expr_group(p):
+    'expr : IZQ_PAREN expr DER_PAREN'
     p[0] = p[2]
+
+def p_expr_atom(p):
+    '''expr : INT_CONST
+            | FLOAT_CONST
+            | BOOL_CONST
+            | STRING_CONST
+            | ID'''
+    if isinstance(p[1], bool):
+        p[0] = Boolean(p[1])
+    elif p.slice[1].type == 'STRING_CONST':
+        # Quitamos las comillas exteriores al crear el nodo String
+        content = p[1][1:-1]  # Elimina comillas inicial y final
+        p[0] = String(content)
+    elif isinstance(p[1], (int, float)):
+        p[0] = Number(p[1])
+    else:
+        p[0] = Identifier(p[1])
 
 def p_error(p):
     if p:
-        raise SyntaxError(f"Error sintactico en token '{p.value}' (línea {p.lineno})")
+        raise SyntaxError(f"Error sintáctico en token '{p.value}' (línea {p.lineno})")
     else:
-        raise SyntaxError("Error sintactico ")
+        raise SyntaxError("Error sintáctico al final del archivo")
 
 parser = yacc.yacc()

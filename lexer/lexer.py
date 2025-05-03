@@ -4,6 +4,8 @@ tokens = [
     'ID',
     'INT_CONST',
     'FLOAT_CONST',
+    'BOOL_CONST',
+    'STRING_CONST',
     'SUMA',
     'RESTA',
     'MULT',
@@ -25,9 +27,7 @@ tokens = [
     'PUNTO_COMA',
     'COMA',
     'COMILLAS_S',
-    'ASIGNACION',
-    'COMILLAS'
-    
+    'ASIGNACION'
 ]
 
 reserved = {
@@ -38,34 +38,46 @@ reserved = {
     'int': 'INT',
     'float': 'FLOAT',
     'char': 'CHAR',
+    'bool': 'BOOL',
+    'true': 'TRUE',
+    'false': 'FALSE',
+    'string': 'STRING',
 }
 
 tokens += list(reserved.values())
 
-t_SUMA    = r'\+'
-t_RESTA   = r'-'
-t_MULT    = r'\*'
-t_DIV     = r'/'
-t_MOD     = r'%'
-t_EQ      = r'=='
-t_NEQ     = r'!='
-t_LT      = r'<'
-t_GT      = r'>'
-t_LE      = r'<='
-t_GE      = r'>='
-t_AND     = r'&&'
-t_OR      = r'\|\|'
-t_NOT     = r'!'
-t_IZQ_PAREN  = r'\('
-t_DER_PAREN  = r'\)'
-t_IZQ_BRACE  = r'\{'
-t_DER_BRACE  = r'\}'
-t_PUNTO_COMA    = r';'
-t_COMA   = r','
+t_SUMA = r'\+'
+t_RESTA = r'-'
+t_MULT = r'\*'
+t_DIV = r'/'
+t_MOD = r'%'
+t_EQ = r'=='
+t_NEQ = r'!='
+t_LT = r'<'
+t_GT = r'>'
+t_LE = r'<='
+t_GE = r'>='
+t_AND = r'&&'
+t_OR = r'\|\|'
+t_NOT = r'!'
+t_IZQ_PAREN = r'\('
+t_DER_PAREN = r'\)'
+t_IZQ_BRACE = r'\{'
+t_DER_BRACE = r'\}'
+t_PUNTO_COMA = r';'
+t_COMA = r','
 t_COMILLAS_S = r'\''
 t_ASIGNACION = r'='
-t_COMILLAS = r'\"'
 
+def t_BOOL_CONST(t):
+    r'true|false'
+    t.value = True if t.value == 'true' else False
+    return t
+
+def t_STRING_CONST(t):
+    r'\"([^\\\"]|\\.)*\"'
+    t.value = t.value
+    return t
 
 def t_FLOAT_CONST(t):
     r'\d+\.\d+'
@@ -79,17 +91,17 @@ def t_INT_CONST(t):
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')  
+    t.type = reserved.get(t.value, 'ID')
     return t
 
 def t_COMMENT_LINE(t):
     r'//.*'
-    pass 
+    pass
 
 def t_COMMENT_BLOCK(t):
     r'/\*(.|\n)*?\*/'
     t.lexer.lineno += t.value.count('\n')
-    pass  
+    pass
 
 t_ignore = ' \t'
 
@@ -97,7 +109,7 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-lex_errors = []                 
+lex_errors = []
 def t_error(t):
     lex_errors.append(
         f"Error léxico: carácter ilegal '{t.value[0]}' "

@@ -8,6 +8,8 @@ from .ast_nodes import (
     Block,
     BinaryOp,
     Number,
+    Boolean,
+    String,
     Identifier
 )
 
@@ -21,5 +23,7 @@ __all__ = [
     "Block",
     "BinaryOp",
     "Number",
+    "Boolean",
+    "String",
     "Identifier"
 ]

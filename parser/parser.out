@@ -2,22 +2,12 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    AND
     CHAR
     COMA
-    COMILLAS
     COMILLAS_S
-    EQ
-    FLOAT
-    GE
-    GT
-    LE
-    LT
-    MOD
-    NEQ
-    NOT
-    OR
+    FALSE
     RETURN
+    TRUE
 
 Grammar
 
@@ -26,68 +16,87 @@ Rule 1     program -> lista_sentencias
 Rule 2     lista_sentencias -> lista_sentencias sentencia
 Rule 3     lista_sentencias -> sentencia
 Rule 4     sentencia -> INT ID PUNTO_COMA
-Rule 5     sentencia -> INT ID ASIGNACION expr PUNTO_COMA
-Rule 6     sentencia -> ID ASIGNACION expr PUNTO_COMA
-Rule 7     sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia
-Rule 8     sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-Rule 9     sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia
-Rule 10    sentencia -> IZQ_BRACE lista_sentencias DER_BRACE
-Rule 11    expr -> expr SUMA termino
-Rule 12    expr -> expr RESTA termino
-Rule 13    termino -> termino MULT factor
-Rule 14    termino -> termino DIV factor
-Rule 15    expr -> termino
-Rule 16    termino -> factor
-Rule 17    factor -> INT_CONST
-Rule 18    factor -> FLOAT_CONST
-Rule 19    factor -> ID
-Rule 20    factor -> IZQ_PAREN expr DER_PAREN
+Rule 5     sentencia -> FLOAT ID PUNTO_COMA
+Rule 6     sentencia -> BOOL ID PUNTO_COMA
+Rule 7     sentencia -> STRING ID PUNTO_COMA
+Rule 8     sentencia -> INT ID ASIGNACION expr PUNTO_COMA
+Rule 9     sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA
+Rule 10    sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA
+Rule 11    sentencia -> STRING ID ASIGNACION expr PUNTO_COMA
+Rule 12    sentencia -> ID ASIGNACION expr PUNTO_COMA
+Rule 13    sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia
+Rule 14    sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+Rule 15    sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia
+Rule 16    sentencia -> IZQ_BRACE lista_sentencias DER_BRACE
+Rule 17    expr -> expr SUMA expr
+Rule 18    expr -> expr RESTA expr
+Rule 19    expr -> expr MULT expr
+Rule 20    expr -> expr DIV expr
+Rule 21    expr -> expr MOD expr
+Rule 22    expr -> expr EQ expr
+Rule 23    expr -> expr NEQ expr
+Rule 24    expr -> expr LT expr
+Rule 25    expr -> expr GT expr
+Rule 26    expr -> expr LE expr
+Rule 27    expr -> expr GE expr
+Rule 28    expr -> expr AND expr
+Rule 29    expr -> expr OR expr
+Rule 30    expr -> NOT expr
+Rule 31    expr -> IZQ_PAREN expr DER_PAREN
+Rule 32    expr -> INT_CONST
+Rule 33    expr -> FLOAT_CONST
+Rule 34    expr -> BOOL_CONST
+Rule 35    expr -> STRING_CONST
+Rule 36    expr -> ID
 
 Terminals, with rules where they appear
 
-AND                  : 
-ASIGNACION           : 5 6
+AND                  : 28
+ASIGNACION           : 8 9 10 11 12
+BOOL                 : 6 10
+BOOL_CONST           : 34
 CHAR                 : 
 COMA                 : 
-COMILLAS             : 
 COMILLAS_S           : 
-DER_BRACE            : 10
-DER_PAREN            : 7 8 9 20
-DIV                  : 14
-ELSE                 : 8
-EQ                   : 
-FLOAT                : 
-FLOAT_CONST          : 18
-GE                   : 
-GT                   : 
-ID                   : 4 5 6 19
-IF                   : 7 8
-INT                  : 4 5
-INT_CONST            : 17
-IZQ_BRACE            : 10
-IZQ_PAREN            : 7 8 9 20
-LE                   : 
-LT                   : 
-MOD                  : 
-MULT                 : 13
-NEQ                  : 
-NOT                  : 
-OR                   : 
-PUNTO_COMA           : 4 5 6
-RESTA                : 12
+DER_BRACE            : 16
+DER_PAREN            : 13 14 15 31
+DIV                  : 20
+ELSE                 : 14
+EQ                   : 22
+FALSE                : 
+FLOAT                : 5 9
+FLOAT_CONST          : 33
+GE                   : 27
+GT                   : 25
+ID                   : 4 5 6 7 8 9 10 11 12 36
+IF                   : 13 14
+INT                  : 4 8
+INT_CONST            : 32
+IZQ_BRACE            : 16
+IZQ_PAREN            : 13 14 15 31
+LE                   : 26
+LT                   : 24
+MOD                  : 21
+MULT                 : 19
+NEQ                  : 23
+NOT                  : 30
+OR                   : 29
+PUNTO_COMA           : 4 5 6 7 8 9 10 11 12
+RESTA                : 18
 RETURN               : 
-SUMA                 : 11
-WHILE                : 9
+STRING               : 7 11
+STRING_CONST         : 35
+SUMA                 : 17
+TRUE                 : 
+WHILE                : 15
 error                : 
 
 Nonterminals, with rules where they appear
 
-expr                 : 5 6 7 8 9 11 12 20
-factor               : 13 14 16
-lista_sentencias     : 1 2 10
+expr                 : 8 9 10 11 12 13 14 15 17 17 18 18 19 19 20 20 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 29 29 30 31
+lista_sentencias     : 1 2 16
 program              : 0
-sentencia            : 2 3 7 8 8 9
-termino              : 11 12 13 14 15
+sentencia            : 2 3 13 14 14 15
 
 Parsing method: LALR
 
@@ -98,18 +107,27 @@ state 0
     (2) lista_sentencias -> . lista_sentencias sentencia
     (3) lista_sentencias -> . sentencia
     (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
 
     INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
     ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
 
     program                        shift and go to state 1
     lista_sentencias               shift and go to state 2
@@ -126,27 +144,39 @@ state 2
     (1) program -> lista_sentencias .
     (2) lista_sentencias -> lista_sentencias . sentencia
     (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
 
     $end            reduce using rule 1 (program -> lista_sentencias .)
     INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
     ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
 
-    sentencia                      shift and go to state 9
+    sentencia                      shift and go to state 12
 
 state 3
 
     (3) lista_sentencias -> sentencia .
 
     INT             reduce using rule 3 (lista_sentencias -> sentencia .)
+    FLOAT           reduce using rule 3 (lista_sentencias -> sentencia .)
+    BOOL            reduce using rule 3 (lista_sentencias -> sentencia .)
+    STRING          reduce using rule 3 (lista_sentencias -> sentencia .)
     ID              reduce using rule 3 (lista_sentencias -> sentencia .)
     IF              reduce using rule 3 (lista_sentencias -> sentencia .)
     WHILE           reduce using rule 3 (lista_sentencias -> sentencia .)
@@ -158,60 +188,96 @@ state 3
 state 4
 
     (4) sentencia -> INT . ID PUNTO_COMA
-    (5) sentencia -> INT . ID ASIGNACION expr PUNTO_COMA
+    (8) sentencia -> INT . ID ASIGNACION expr PUNTO_COMA
 
-    ID              shift and go to state 10
+    ID              shift and go to state 13
 
 
 state 5
 
-    (6) sentencia -> ID . ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> ID . ASIGNACION expr PUNTO_COMA
 
-    ASIGNACION      shift and go to state 11
+    ASIGNACION      shift and go to state 14
 
 
 state 6
 
-    (7) sentencia -> IF . IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> IF . IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (5) sentencia -> FLOAT . ID PUNTO_COMA
+    (9) sentencia -> FLOAT . ID ASIGNACION expr PUNTO_COMA
 
-    IZQ_PAREN       shift and go to state 12
+    ID              shift and go to state 15
 
 
 state 7
 
-    (9) sentencia -> WHILE . IZQ_PAREN expr DER_PAREN sentencia
+    (6) sentencia -> BOOL . ID PUNTO_COMA
+    (10) sentencia -> BOOL . ID ASIGNACION expr PUNTO_COMA
 
-    IZQ_PAREN       shift and go to state 13
+    ID              shift and go to state 16
 
 
 state 8
 
-    (10) sentencia -> IZQ_BRACE . lista_sentencias DER_BRACE
+    (7) sentencia -> STRING . ID PUNTO_COMA
+    (11) sentencia -> STRING . ID ASIGNACION expr PUNTO_COMA
+
+    ID              shift and go to state 17
+
+
+state 9
+
+    (13) sentencia -> IF . IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> IF . IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+
+    IZQ_PAREN       shift and go to state 18
+
+
+state 10
+
+    (15) sentencia -> WHILE . IZQ_PAREN expr DER_PAREN sentencia
+
+    IZQ_PAREN       shift and go to state 19
+
+
+state 11
+
+    (16) sentencia -> IZQ_BRACE . lista_sentencias DER_BRACE
     (2) lista_sentencias -> . lista_sentencias sentencia
     (3) lista_sentencias -> . sentencia
     (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
 
     INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
     ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
 
-    lista_sentencias               shift and go to state 14
+    lista_sentencias               shift and go to state 20
     sentencia                      shift and go to state 3
 
-state 9
+state 12
 
     (2) lista_sentencias -> lista_sentencias sentencia .
 
     INT             reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    FLOAT           reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    BOOL            reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
+    STRING          reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
     ID              reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
     IF              reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
     WHILE           reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
@@ -220,111 +286,183 @@ state 9
     DER_BRACE       reduce using rule 2 (lista_sentencias -> lista_sentencias sentencia .)
 
 
-state 10
-
-    (4) sentencia -> INT ID . PUNTO_COMA
-    (5) sentencia -> INT ID . ASIGNACION expr PUNTO_COMA
-
-    PUNTO_COMA      shift and go to state 15
-    ASIGNACION      shift and go to state 16
-
-
-state 11
-
-    (6) sentencia -> ID ASIGNACION . expr PUNTO_COMA
-    (11) expr -> . expr SUMA termino
-    (12) expr -> . expr RESTA termino
-    (15) expr -> . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
-
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
-
-    expr                           shift and go to state 18
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
-state 12
-
-    (7) sentencia -> IF IZQ_PAREN . expr DER_PAREN sentencia
-    (8) sentencia -> IF IZQ_PAREN . expr DER_PAREN sentencia ELSE sentencia
-    (11) expr -> . expr SUMA termino
-    (12) expr -> . expr RESTA termino
-    (15) expr -> . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
-
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
-
-    expr                           shift and go to state 24
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
 state 13
 
-    (9) sentencia -> WHILE IZQ_PAREN . expr DER_PAREN sentencia
-    (11) expr -> . expr SUMA termino
-    (12) expr -> . expr RESTA termino
-    (15) expr -> . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
+    (4) sentencia -> INT ID . PUNTO_COMA
+    (8) sentencia -> INT ID . ASIGNACION expr PUNTO_COMA
 
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
+    PUNTO_COMA      shift and go to state 21
+    ASIGNACION      shift and go to state 22
 
-    expr                           shift and go to state 25
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
 
 state 14
 
-    (10) sentencia -> IZQ_BRACE lista_sentencias . DER_BRACE
-    (2) lista_sentencias -> lista_sentencias . sentencia
-    (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (12) sentencia -> ID ASIGNACION . expr PUNTO_COMA
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    DER_BRACE       shift and go to state 26
-    INT             shift and go to state 4
-    ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
-    sentencia                      shift and go to state 9
+    expr                           shift and go to state 24
 
 state 15
+
+    (5) sentencia -> FLOAT ID . PUNTO_COMA
+    (9) sentencia -> FLOAT ID . ASIGNACION expr PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 31
+    ASIGNACION      shift and go to state 32
+
+
+state 16
+
+    (6) sentencia -> BOOL ID . PUNTO_COMA
+    (10) sentencia -> BOOL ID . ASIGNACION expr PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 33
+    ASIGNACION      shift and go to state 34
+
+
+state 17
+
+    (7) sentencia -> STRING ID . PUNTO_COMA
+    (11) sentencia -> STRING ID . ASIGNACION expr PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 35
+    ASIGNACION      shift and go to state 36
+
+
+state 18
+
+    (13) sentencia -> IF IZQ_PAREN . expr DER_PAREN sentencia
+    (14) sentencia -> IF IZQ_PAREN . expr DER_PAREN sentencia ELSE sentencia
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 37
+
+state 19
+
+    (15) sentencia -> WHILE IZQ_PAREN . expr DER_PAREN sentencia
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 38
+
+state 20
+
+    (16) sentencia -> IZQ_BRACE lista_sentencias . DER_BRACE
+    (2) lista_sentencias -> lista_sentencias . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    DER_BRACE       shift and go to state 39
+    INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
+    ID              shift and go to state 5
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
+
+    sentencia                      shift and go to state 12
+
+state 21
 
     (4) sentencia -> INT ID PUNTO_COMA .
 
     INT             reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    FLOAT           reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    BOOL            reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
+    STRING          reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
     ID              reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
     IF              reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
     WHILE           reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
@@ -334,443 +472,2032 @@ state 15
     ELSE            reduce using rule 4 (sentencia -> INT ID PUNTO_COMA .)
 
 
-state 16
-
-    (5) sentencia -> INT ID ASIGNACION . expr PUNTO_COMA
-    (11) expr -> . expr SUMA termino
-    (12) expr -> . expr RESTA termino
-    (15) expr -> . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
-
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
-
-    expr                           shift and go to state 27
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
-state 17
-
-    (19) factor -> ID .
-
-    MULT            reduce using rule 19 (factor -> ID .)
-    DIV             reduce using rule 19 (factor -> ID .)
-    PUNTO_COMA      reduce using rule 19 (factor -> ID .)
-    SUMA            reduce using rule 19 (factor -> ID .)
-    RESTA           reduce using rule 19 (factor -> ID .)
-    DER_PAREN       reduce using rule 19 (factor -> ID .)
-
-
-state 18
-
-    (6) sentencia -> ID ASIGNACION expr . PUNTO_COMA
-    (11) expr -> expr . SUMA termino
-    (12) expr -> expr . RESTA termino
-
-    PUNTO_COMA      shift and go to state 28
-    SUMA            shift and go to state 29
-    RESTA           shift and go to state 30
-
-
-state 19
-
-    (15) expr -> termino .
-    (13) termino -> termino . MULT factor
-    (14) termino -> termino . DIV factor
-
-    PUNTO_COMA      reduce using rule 15 (expr -> termino .)
-    SUMA            reduce using rule 15 (expr -> termino .)
-    RESTA           reduce using rule 15 (expr -> termino .)
-    DER_PAREN       reduce using rule 15 (expr -> termino .)
-    MULT            shift and go to state 31
-    DIV             shift and go to state 32
-
-
-state 20
-
-    (16) termino -> factor .
-
-    MULT            reduce using rule 16 (termino -> factor .)
-    DIV             reduce using rule 16 (termino -> factor .)
-    PUNTO_COMA      reduce using rule 16 (termino -> factor .)
-    SUMA            reduce using rule 16 (termino -> factor .)
-    RESTA           reduce using rule 16 (termino -> factor .)
-    DER_PAREN       reduce using rule 16 (termino -> factor .)
-
-
-state 21
-
-    (17) factor -> INT_CONST .
-
-    MULT            reduce using rule 17 (factor -> INT_CONST .)
-    DIV             reduce using rule 17 (factor -> INT_CONST .)
-    PUNTO_COMA      reduce using rule 17 (factor -> INT_CONST .)
-    SUMA            reduce using rule 17 (factor -> INT_CONST .)
-    RESTA           reduce using rule 17 (factor -> INT_CONST .)
-    DER_PAREN       reduce using rule 17 (factor -> INT_CONST .)
-
-
 state 22
 
-    (18) factor -> FLOAT_CONST .
+    (8) sentencia -> INT ID ASIGNACION . expr PUNTO_COMA
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    MULT            reduce using rule 18 (factor -> FLOAT_CONST .)
-    DIV             reduce using rule 18 (factor -> FLOAT_CONST .)
-    PUNTO_COMA      reduce using rule 18 (factor -> FLOAT_CONST .)
-    SUMA            reduce using rule 18 (factor -> FLOAT_CONST .)
-    RESTA           reduce using rule 18 (factor -> FLOAT_CONST .)
-    DER_PAREN       reduce using rule 18 (factor -> FLOAT_CONST .)
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
+    expr                           shift and go to state 40
 
 state 23
 
-    (20) factor -> IZQ_PAREN . expr DER_PAREN
-    (11) expr -> . expr SUMA termino
-    (12) expr -> . expr RESTA termino
-    (15) expr -> . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
+    (36) expr -> ID .
 
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
+    PUNTO_COMA      reduce using rule 36 (expr -> ID .)
+    SUMA            reduce using rule 36 (expr -> ID .)
+    RESTA           reduce using rule 36 (expr -> ID .)
+    MULT            reduce using rule 36 (expr -> ID .)
+    DIV             reduce using rule 36 (expr -> ID .)
+    MOD             reduce using rule 36 (expr -> ID .)
+    EQ              reduce using rule 36 (expr -> ID .)
+    NEQ             reduce using rule 36 (expr -> ID .)
+    LT              reduce using rule 36 (expr -> ID .)
+    GT              reduce using rule 36 (expr -> ID .)
+    LE              reduce using rule 36 (expr -> ID .)
+    GE              reduce using rule 36 (expr -> ID .)
+    AND             reduce using rule 36 (expr -> ID .)
+    OR              reduce using rule 36 (expr -> ID .)
+    DER_PAREN       reduce using rule 36 (expr -> ID .)
 
-    expr                           shift and go to state 33
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
 
 state 24
 
-    (7) sentencia -> IF IZQ_PAREN expr . DER_PAREN sentencia
-    (8) sentencia -> IF IZQ_PAREN expr . DER_PAREN sentencia ELSE sentencia
-    (11) expr -> expr . SUMA termino
-    (12) expr -> expr . RESTA termino
+    (12) sentencia -> ID ASIGNACION expr . PUNTO_COMA
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
 
-    DER_PAREN       shift and go to state 34
-    SUMA            shift and go to state 29
-    RESTA           shift and go to state 30
+    PUNTO_COMA      shift and go to state 41
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
 
 
 state 25
 
-    (9) sentencia -> WHILE IZQ_PAREN expr . DER_PAREN sentencia
-    (11) expr -> expr . SUMA termino
-    (12) expr -> expr . RESTA termino
+    (30) expr -> NOT . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    DER_PAREN       shift and go to state 35
-    SUMA            shift and go to state 29
-    RESTA           shift and go to state 30
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
+    expr                           shift and go to state 55
 
 state 26
 
-    (10) sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .
+    (31) expr -> IZQ_PAREN . expr DER_PAREN
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    ID              reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    IF              reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    WHILE           reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    IZQ_BRACE       reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    $end            reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    DER_BRACE       reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
-    ELSE            reduce using rule 10 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
+    expr                           shift and go to state 56
 
 state 27
 
-    (5) sentencia -> INT ID ASIGNACION expr . PUNTO_COMA
-    (11) expr -> expr . SUMA termino
-    (12) expr -> expr . RESTA termino
+    (32) expr -> INT_CONST .
 
-    PUNTO_COMA      shift and go to state 36
-    SUMA            shift and go to state 29
-    RESTA           shift and go to state 30
+    PUNTO_COMA      reduce using rule 32 (expr -> INT_CONST .)
+    SUMA            reduce using rule 32 (expr -> INT_CONST .)
+    RESTA           reduce using rule 32 (expr -> INT_CONST .)
+    MULT            reduce using rule 32 (expr -> INT_CONST .)
+    DIV             reduce using rule 32 (expr -> INT_CONST .)
+    MOD             reduce using rule 32 (expr -> INT_CONST .)
+    EQ              reduce using rule 32 (expr -> INT_CONST .)
+    NEQ             reduce using rule 32 (expr -> INT_CONST .)
+    LT              reduce using rule 32 (expr -> INT_CONST .)
+    GT              reduce using rule 32 (expr -> INT_CONST .)
+    LE              reduce using rule 32 (expr -> INT_CONST .)
+    GE              reduce using rule 32 (expr -> INT_CONST .)
+    AND             reduce using rule 32 (expr -> INT_CONST .)
+    OR              reduce using rule 32 (expr -> INT_CONST .)
+    DER_PAREN       reduce using rule 32 (expr -> INT_CONST .)
 
 
 state 28
 
-    (6) sentencia -> ID ASIGNACION expr PUNTO_COMA .
+    (33) expr -> FLOAT_CONST .
 
-    INT             reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    ID              reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    IF              reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    WHILE           reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    IZQ_BRACE       reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    $end            reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    DER_BRACE       reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
-    ELSE            reduce using rule 6 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    PUNTO_COMA      reduce using rule 33 (expr -> FLOAT_CONST .)
+    SUMA            reduce using rule 33 (expr -> FLOAT_CONST .)
+    RESTA           reduce using rule 33 (expr -> FLOAT_CONST .)
+    MULT            reduce using rule 33 (expr -> FLOAT_CONST .)
+    DIV             reduce using rule 33 (expr -> FLOAT_CONST .)
+    MOD             reduce using rule 33 (expr -> FLOAT_CONST .)
+    EQ              reduce using rule 33 (expr -> FLOAT_CONST .)
+    NEQ             reduce using rule 33 (expr -> FLOAT_CONST .)
+    LT              reduce using rule 33 (expr -> FLOAT_CONST .)
+    GT              reduce using rule 33 (expr -> FLOAT_CONST .)
+    LE              reduce using rule 33 (expr -> FLOAT_CONST .)
+    GE              reduce using rule 33 (expr -> FLOAT_CONST .)
+    AND             reduce using rule 33 (expr -> FLOAT_CONST .)
+    OR              reduce using rule 33 (expr -> FLOAT_CONST .)
+    DER_PAREN       reduce using rule 33 (expr -> FLOAT_CONST .)
 
 
 state 29
 
-    (11) expr -> expr SUMA . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
+    (34) expr -> BOOL_CONST .
 
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
+    PUNTO_COMA      reduce using rule 34 (expr -> BOOL_CONST .)
+    SUMA            reduce using rule 34 (expr -> BOOL_CONST .)
+    RESTA           reduce using rule 34 (expr -> BOOL_CONST .)
+    MULT            reduce using rule 34 (expr -> BOOL_CONST .)
+    DIV             reduce using rule 34 (expr -> BOOL_CONST .)
+    MOD             reduce using rule 34 (expr -> BOOL_CONST .)
+    EQ              reduce using rule 34 (expr -> BOOL_CONST .)
+    NEQ             reduce using rule 34 (expr -> BOOL_CONST .)
+    LT              reduce using rule 34 (expr -> BOOL_CONST .)
+    GT              reduce using rule 34 (expr -> BOOL_CONST .)
+    LE              reduce using rule 34 (expr -> BOOL_CONST .)
+    GE              reduce using rule 34 (expr -> BOOL_CONST .)
+    AND             reduce using rule 34 (expr -> BOOL_CONST .)
+    OR              reduce using rule 34 (expr -> BOOL_CONST .)
+    DER_PAREN       reduce using rule 34 (expr -> BOOL_CONST .)
 
-    termino                        shift and go to state 37
-    factor                         shift and go to state 20
 
 state 30
 
-    (12) expr -> expr RESTA . termino
-    (13) termino -> . termino MULT factor
-    (14) termino -> . termino DIV factor
-    (16) termino -> . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
+    (35) expr -> STRING_CONST .
 
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
+    PUNTO_COMA      reduce using rule 35 (expr -> STRING_CONST .)
+    SUMA            reduce using rule 35 (expr -> STRING_CONST .)
+    RESTA           reduce using rule 35 (expr -> STRING_CONST .)
+    MULT            reduce using rule 35 (expr -> STRING_CONST .)
+    DIV             reduce using rule 35 (expr -> STRING_CONST .)
+    MOD             reduce using rule 35 (expr -> STRING_CONST .)
+    EQ              reduce using rule 35 (expr -> STRING_CONST .)
+    NEQ             reduce using rule 35 (expr -> STRING_CONST .)
+    LT              reduce using rule 35 (expr -> STRING_CONST .)
+    GT              reduce using rule 35 (expr -> STRING_CONST .)
+    LE              reduce using rule 35 (expr -> STRING_CONST .)
+    GE              reduce using rule 35 (expr -> STRING_CONST .)
+    AND             reduce using rule 35 (expr -> STRING_CONST .)
+    OR              reduce using rule 35 (expr -> STRING_CONST .)
+    DER_PAREN       reduce using rule 35 (expr -> STRING_CONST .)
 
-    termino                        shift and go to state 38
-    factor                         shift and go to state 20
 
 state 31
 
-    (13) termino -> termino MULT . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
+    (5) sentencia -> FLOAT ID PUNTO_COMA .
 
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
+    INT             reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    FLOAT           reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    BOOL            reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    STRING          reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    ID              reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    IF              reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    WHILE           reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    $end            reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    DER_BRACE       reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
+    ELSE            reduce using rule 5 (sentencia -> FLOAT ID PUNTO_COMA .)
 
-    factor                         shift and go to state 39
 
 state 32
 
-    (14) termino -> termino DIV . factor
-    (17) factor -> . INT_CONST
-    (18) factor -> . FLOAT_CONST
-    (19) factor -> . ID
-    (20) factor -> . IZQ_PAREN expr DER_PAREN
+    (9) sentencia -> FLOAT ID ASIGNACION . expr PUNTO_COMA
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT_CONST       shift and go to state 21
-    FLOAT_CONST     shift and go to state 22
-    ID              shift and go to state 17
-    IZQ_PAREN       shift and go to state 23
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
-    factor                         shift and go to state 40
+    expr                           shift and go to state 57
 
 state 33
 
-    (20) factor -> IZQ_PAREN expr . DER_PAREN
-    (11) expr -> expr . SUMA termino
-    (12) expr -> expr . RESTA termino
+    (6) sentencia -> BOOL ID PUNTO_COMA .
 
-    DER_PAREN       shift and go to state 41
-    SUMA            shift and go to state 29
-    RESTA           shift and go to state 30
+    INT             reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    FLOAT           reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    BOOL            reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    STRING          reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    ID              reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    IF              reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    WHILE           reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    $end            reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    DER_BRACE       reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
+    ELSE            reduce using rule 6 (sentencia -> BOOL ID PUNTO_COMA .)
 
 
 state 34
 
-    (7) sentencia -> IF IZQ_PAREN expr DER_PAREN . sentencia
-    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN . sentencia ELSE sentencia
-    (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (10) sentencia -> BOOL ID ASIGNACION . expr PUNTO_COMA
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             shift and go to state 4
-    ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
-    sentencia                      shift and go to state 42
+    expr                           shift and go to state 58
 
 state 35
 
-    (9) sentencia -> WHILE IZQ_PAREN expr DER_PAREN . sentencia
-    (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (7) sentencia -> STRING ID PUNTO_COMA .
 
-    INT             shift and go to state 4
-    ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    INT             reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    FLOAT           reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    BOOL            reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    STRING          reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    ID              reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    IF              reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    WHILE           reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    $end            reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    DER_BRACE       reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
+    ELSE            reduce using rule 7 (sentencia -> STRING ID PUNTO_COMA .)
 
-    sentencia                      shift and go to state 43
 
 state 36
 
-    (5) sentencia -> INT ID ASIGNACION expr PUNTO_COMA .
+    (11) sentencia -> STRING ID ASIGNACION . expr PUNTO_COMA
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    ID              reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    IF              reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    WHILE           reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    IZQ_BRACE       reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    $end            reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    DER_BRACE       reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
-    ELSE            reduce using rule 5 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
+    expr                           shift and go to state 59
 
 state 37
 
-    (11) expr -> expr SUMA termino .
-    (13) termino -> termino . MULT factor
-    (14) termino -> termino . DIV factor
+    (13) sentencia -> IF IZQ_PAREN expr . DER_PAREN sentencia
+    (14) sentencia -> IF IZQ_PAREN expr . DER_PAREN sentencia ELSE sentencia
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
 
-    PUNTO_COMA      reduce using rule 11 (expr -> expr SUMA termino .)
-    SUMA            reduce using rule 11 (expr -> expr SUMA termino .)
-    RESTA           reduce using rule 11 (expr -> expr SUMA termino .)
-    DER_PAREN       reduce using rule 11 (expr -> expr SUMA termino .)
-    MULT            shift and go to state 31
-    DIV             shift and go to state 32
+    DER_PAREN       shift and go to state 60
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
 
 
 state 38
 
-    (12) expr -> expr RESTA termino .
-    (13) termino -> termino . MULT factor
-    (14) termino -> termino . DIV factor
+    (15) sentencia -> WHILE IZQ_PAREN expr . DER_PAREN sentencia
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
 
-    PUNTO_COMA      reduce using rule 12 (expr -> expr RESTA termino .)
-    SUMA            reduce using rule 12 (expr -> expr RESTA termino .)
-    RESTA           reduce using rule 12 (expr -> expr RESTA termino .)
-    DER_PAREN       reduce using rule 12 (expr -> expr RESTA termino .)
-    MULT            shift and go to state 31
-    DIV             shift and go to state 32
+    DER_PAREN       shift and go to state 61
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
 
 
 state 39
 
-    (13) termino -> termino MULT factor .
+    (16) sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .
 
-    MULT            reduce using rule 13 (termino -> termino MULT factor .)
-    DIV             reduce using rule 13 (termino -> termino MULT factor .)
-    PUNTO_COMA      reduce using rule 13 (termino -> termino MULT factor .)
-    SUMA            reduce using rule 13 (termino -> termino MULT factor .)
-    RESTA           reduce using rule 13 (termino -> termino MULT factor .)
-    DER_PAREN       reduce using rule 13 (termino -> termino MULT factor .)
+    INT             reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    FLOAT           reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    BOOL            reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    STRING          reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    ID              reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    IF              reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    WHILE           reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    IZQ_BRACE       reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    $end            reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    DER_BRACE       reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
+    ELSE            reduce using rule 16 (sentencia -> IZQ_BRACE lista_sentencias DER_BRACE .)
 
 
 state 40
 
-    (14) termino -> termino DIV factor .
+    (8) sentencia -> INT ID ASIGNACION expr . PUNTO_COMA
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
 
-    MULT            reduce using rule 14 (termino -> termino DIV factor .)
-    DIV             reduce using rule 14 (termino -> termino DIV factor .)
-    PUNTO_COMA      reduce using rule 14 (termino -> termino DIV factor .)
-    SUMA            reduce using rule 14 (termino -> termino DIV factor .)
-    RESTA           reduce using rule 14 (termino -> termino DIV factor .)
-    DER_PAREN       reduce using rule 14 (termino -> termino DIV factor .)
+    PUNTO_COMA      shift and go to state 62
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
 
 
 state 41
 
-    (20) factor -> IZQ_PAREN expr DER_PAREN .
+    (12) sentencia -> ID ASIGNACION expr PUNTO_COMA .
 
-    MULT            reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
-    DIV             reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
-    PUNTO_COMA      reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
-    SUMA            reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
-    RESTA           reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
-    DER_PAREN       reduce using rule 20 (factor -> IZQ_PAREN expr DER_PAREN .)
+    INT             reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    FLOAT           reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    BOOL            reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    STRING          reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 12 (sentencia -> ID ASIGNACION expr PUNTO_COMA .)
 
 
 state 42
 
-    (7) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .
-    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia . ELSE sentencia
+    (17) expr -> expr SUMA . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    ID              reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    IF              reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    WHILE           reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    IZQ_BRACE       reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    $end            reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    DER_BRACE       reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
-    ELSE            shift and go to state 44
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
-  ! ELSE            [ reduce using rule 7 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .) ]
-
+    expr                           shift and go to state 63
 
 state 43
 
-    (9) sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .
+    (18) expr -> expr RESTA . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    ID              reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    IF              reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    WHILE           reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    IZQ_BRACE       reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    $end            reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    DER_BRACE       reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
-    ELSE            reduce using rule 9 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
+    expr                           shift and go to state 64
 
 state 44
 
-    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE . sentencia
-    (4) sentencia -> . INT ID PUNTO_COMA
-    (5) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
-    (6) sentencia -> . ID ASIGNACION expr PUNTO_COMA
-    (7) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
-    (8) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
-    (9) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
-    (10) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+    (19) expr -> expr MULT . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             shift and go to state 4
-    ID              shift and go to state 5
-    IF              shift and go to state 6
-    WHILE           shift and go to state 7
-    IZQ_BRACE       shift and go to state 8
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
-    sentencia                      shift and go to state 45
+    expr                           shift and go to state 65
 
 state 45
 
-    (8) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .
+    (20) expr -> expr DIV . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
 
-    INT             reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    ID              reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    IF              reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    WHILE           reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    IZQ_BRACE       reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    $end            reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    DER_BRACE       reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
-    ELSE            reduce using rule 8 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
 
+    expr                           shift and go to state 66
+
+state 46
+
+    (21) expr -> expr MOD . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 67
+
+state 47
+
+    (22) expr -> expr EQ . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 68
+
+state 48
+
+    (23) expr -> expr NEQ . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 69
+
+state 49
+
+    (24) expr -> expr LT . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 70
+
+state 50
+
+    (25) expr -> expr GT . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 71
+
+state 51
+
+    (26) expr -> expr LE . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 72
+
+state 52
+
+    (27) expr -> expr GE . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 73
+
+state 53
+
+    (28) expr -> expr AND . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 74
+
+state 54
+
+    (29) expr -> expr OR . expr
+    (17) expr -> . expr SUMA expr
+    (18) expr -> . expr RESTA expr
+    (19) expr -> . expr MULT expr
+    (20) expr -> . expr DIV expr
+    (21) expr -> . expr MOD expr
+    (22) expr -> . expr EQ expr
+    (23) expr -> . expr NEQ expr
+    (24) expr -> . expr LT expr
+    (25) expr -> . expr GT expr
+    (26) expr -> . expr LE expr
+    (27) expr -> . expr GE expr
+    (28) expr -> . expr AND expr
+    (29) expr -> . expr OR expr
+    (30) expr -> . NOT expr
+    (31) expr -> . IZQ_PAREN expr DER_PAREN
+    (32) expr -> . INT_CONST
+    (33) expr -> . FLOAT_CONST
+    (34) expr -> . BOOL_CONST
+    (35) expr -> . STRING_CONST
+    (36) expr -> . ID
+
+    NOT             shift and go to state 25
+    IZQ_PAREN       shift and go to state 26
+    INT_CONST       shift and go to state 27
+    FLOAT_CONST     shift and go to state 28
+    BOOL_CONST      shift and go to state 29
+    STRING_CONST    shift and go to state 30
+    ID              shift and go to state 23
+
+    expr                           shift and go to state 75
+
+state 55
+
+    (30) expr -> NOT expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+  ! shift/reduce conflict for SUMA resolved as shift
+  ! shift/reduce conflict for RESTA resolved as shift
+  ! shift/reduce conflict for MULT resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+  ! shift/reduce conflict for MOD resolved as shift
+  ! shift/reduce conflict for EQ resolved as shift
+  ! shift/reduce conflict for NEQ resolved as shift
+  ! shift/reduce conflict for LT resolved as shift
+  ! shift/reduce conflict for GT resolved as shift
+  ! shift/reduce conflict for LE resolved as shift
+  ! shift/reduce conflict for GE resolved as shift
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    PUNTO_COMA      reduce using rule 30 (expr -> NOT expr .)
+    DER_PAREN       reduce using rule 30 (expr -> NOT expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
+
+  ! SUMA            [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! RESTA           [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! MULT            [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! DIV             [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! MOD             [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! EQ              [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! NEQ             [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! LT              [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! GT              [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! LE              [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! GE              [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! AND             [ reduce using rule 30 (expr -> NOT expr .) ]
+  ! OR              [ reduce using rule 30 (expr -> NOT expr .) ]
+
+
+state 56
+
+    (31) expr -> IZQ_PAREN expr . DER_PAREN
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    DER_PAREN       shift and go to state 76
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
+
+
+state 57
+
+    (9) sentencia -> FLOAT ID ASIGNACION expr . PUNTO_COMA
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      shift and go to state 77
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
+
+
+state 58
+
+    (10) sentencia -> BOOL ID ASIGNACION expr . PUNTO_COMA
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      shift and go to state 78
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
+
+
+state 59
+
+    (11) sentencia -> STRING ID ASIGNACION expr . PUNTO_COMA
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      shift and go to state 79
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+    OR              shift and go to state 54
+
+
+state 60
+
+    (13) sentencia -> IF IZQ_PAREN expr DER_PAREN . sentencia
+    (14) sentencia -> IF IZQ_PAREN expr DER_PAREN . sentencia ELSE sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
+    ID              shift and go to state 5
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
+
+    sentencia                      shift and go to state 80
+
+state 61
+
+    (15) sentencia -> WHILE IZQ_PAREN expr DER_PAREN . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
+    ID              shift and go to state 5
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
+
+    sentencia                      shift and go to state 81
+
+state 62
+
+    (8) sentencia -> INT ID ASIGNACION expr PUNTO_COMA .
+
+    INT             reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    FLOAT           reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    BOOL            reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    STRING          reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 8 (sentencia -> INT ID ASIGNACION expr PUNTO_COMA .)
+
+
+state 63
+
+    (17) expr -> expr SUMA expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 17 (expr -> expr SUMA expr .)
+    SUMA            reduce using rule 17 (expr -> expr SUMA expr .)
+    RESTA           reduce using rule 17 (expr -> expr SUMA expr .)
+    EQ              reduce using rule 17 (expr -> expr SUMA expr .)
+    NEQ             reduce using rule 17 (expr -> expr SUMA expr .)
+    LT              reduce using rule 17 (expr -> expr SUMA expr .)
+    GT              reduce using rule 17 (expr -> expr SUMA expr .)
+    LE              reduce using rule 17 (expr -> expr SUMA expr .)
+    GE              reduce using rule 17 (expr -> expr SUMA expr .)
+    AND             reduce using rule 17 (expr -> expr SUMA expr .)
+    OR              reduce using rule 17 (expr -> expr SUMA expr .)
+    DER_PAREN       reduce using rule 17 (expr -> expr SUMA expr .)
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+
+  ! MULT            [ reduce using rule 17 (expr -> expr SUMA expr .) ]
+  ! DIV             [ reduce using rule 17 (expr -> expr SUMA expr .) ]
+  ! MOD             [ reduce using rule 17 (expr -> expr SUMA expr .) ]
+  ! SUMA            [ shift and go to state 42 ]
+  ! RESTA           [ shift and go to state 43 ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 64
+
+    (18) expr -> expr RESTA expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 18 (expr -> expr RESTA expr .)
+    SUMA            reduce using rule 18 (expr -> expr RESTA expr .)
+    RESTA           reduce using rule 18 (expr -> expr RESTA expr .)
+    EQ              reduce using rule 18 (expr -> expr RESTA expr .)
+    NEQ             reduce using rule 18 (expr -> expr RESTA expr .)
+    LT              reduce using rule 18 (expr -> expr RESTA expr .)
+    GT              reduce using rule 18 (expr -> expr RESTA expr .)
+    LE              reduce using rule 18 (expr -> expr RESTA expr .)
+    GE              reduce using rule 18 (expr -> expr RESTA expr .)
+    AND             reduce using rule 18 (expr -> expr RESTA expr .)
+    OR              reduce using rule 18 (expr -> expr RESTA expr .)
+    DER_PAREN       reduce using rule 18 (expr -> expr RESTA expr .)
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+
+  ! MULT            [ reduce using rule 18 (expr -> expr RESTA expr .) ]
+  ! DIV             [ reduce using rule 18 (expr -> expr RESTA expr .) ]
+  ! MOD             [ reduce using rule 18 (expr -> expr RESTA expr .) ]
+  ! SUMA            [ shift and go to state 42 ]
+  ! RESTA           [ shift and go to state 43 ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 65
+
+    (19) expr -> expr MULT expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 19 (expr -> expr MULT expr .)
+    SUMA            reduce using rule 19 (expr -> expr MULT expr .)
+    RESTA           reduce using rule 19 (expr -> expr MULT expr .)
+    MULT            reduce using rule 19 (expr -> expr MULT expr .)
+    DIV             reduce using rule 19 (expr -> expr MULT expr .)
+    MOD             reduce using rule 19 (expr -> expr MULT expr .)
+    EQ              reduce using rule 19 (expr -> expr MULT expr .)
+    NEQ             reduce using rule 19 (expr -> expr MULT expr .)
+    LT              reduce using rule 19 (expr -> expr MULT expr .)
+    GT              reduce using rule 19 (expr -> expr MULT expr .)
+    LE              reduce using rule 19 (expr -> expr MULT expr .)
+    GE              reduce using rule 19 (expr -> expr MULT expr .)
+    AND             reduce using rule 19 (expr -> expr MULT expr .)
+    OR              reduce using rule 19 (expr -> expr MULT expr .)
+    DER_PAREN       reduce using rule 19 (expr -> expr MULT expr .)
+
+  ! SUMA            [ shift and go to state 42 ]
+  ! RESTA           [ shift and go to state 43 ]
+  ! MULT            [ shift and go to state 44 ]
+  ! DIV             [ shift and go to state 45 ]
+  ! MOD             [ shift and go to state 46 ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 66
+
+    (20) expr -> expr DIV expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 20 (expr -> expr DIV expr .)
+    SUMA            reduce using rule 20 (expr -> expr DIV expr .)
+    RESTA           reduce using rule 20 (expr -> expr DIV expr .)
+    MULT            reduce using rule 20 (expr -> expr DIV expr .)
+    DIV             reduce using rule 20 (expr -> expr DIV expr .)
+    MOD             reduce using rule 20 (expr -> expr DIV expr .)
+    EQ              reduce using rule 20 (expr -> expr DIV expr .)
+    NEQ             reduce using rule 20 (expr -> expr DIV expr .)
+    LT              reduce using rule 20 (expr -> expr DIV expr .)
+    GT              reduce using rule 20 (expr -> expr DIV expr .)
+    LE              reduce using rule 20 (expr -> expr DIV expr .)
+    GE              reduce using rule 20 (expr -> expr DIV expr .)
+    AND             reduce using rule 20 (expr -> expr DIV expr .)
+    OR              reduce using rule 20 (expr -> expr DIV expr .)
+    DER_PAREN       reduce using rule 20 (expr -> expr DIV expr .)
+
+  ! SUMA            [ shift and go to state 42 ]
+  ! RESTA           [ shift and go to state 43 ]
+  ! MULT            [ shift and go to state 44 ]
+  ! DIV             [ shift and go to state 45 ]
+  ! MOD             [ shift and go to state 46 ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 67
+
+    (21) expr -> expr MOD expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 21 (expr -> expr MOD expr .)
+    SUMA            reduce using rule 21 (expr -> expr MOD expr .)
+    RESTA           reduce using rule 21 (expr -> expr MOD expr .)
+    MULT            reduce using rule 21 (expr -> expr MOD expr .)
+    DIV             reduce using rule 21 (expr -> expr MOD expr .)
+    MOD             reduce using rule 21 (expr -> expr MOD expr .)
+    EQ              reduce using rule 21 (expr -> expr MOD expr .)
+    NEQ             reduce using rule 21 (expr -> expr MOD expr .)
+    LT              reduce using rule 21 (expr -> expr MOD expr .)
+    GT              reduce using rule 21 (expr -> expr MOD expr .)
+    LE              reduce using rule 21 (expr -> expr MOD expr .)
+    GE              reduce using rule 21 (expr -> expr MOD expr .)
+    AND             reduce using rule 21 (expr -> expr MOD expr .)
+    OR              reduce using rule 21 (expr -> expr MOD expr .)
+    DER_PAREN       reduce using rule 21 (expr -> expr MOD expr .)
+
+  ! SUMA            [ shift and go to state 42 ]
+  ! RESTA           [ shift and go to state 43 ]
+  ! MULT            [ shift and go to state 44 ]
+  ! DIV             [ shift and go to state 45 ]
+  ! MOD             [ shift and go to state 46 ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 68
+
+    (22) expr -> expr EQ expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 22 (expr -> expr EQ expr .)
+    EQ              reduce using rule 22 (expr -> expr EQ expr .)
+    NEQ             reduce using rule 22 (expr -> expr EQ expr .)
+    AND             reduce using rule 22 (expr -> expr EQ expr .)
+    OR              reduce using rule 22 (expr -> expr EQ expr .)
+    DER_PAREN       reduce using rule 22 (expr -> expr EQ expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+
+  ! SUMA            [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! RESTA           [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! MULT            [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! DIV             [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! MOD             [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! LT              [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! GT              [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! LE              [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! GE              [ reduce using rule 22 (expr -> expr EQ expr .) ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 69
+
+    (23) expr -> expr NEQ expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 23 (expr -> expr NEQ expr .)
+    EQ              reduce using rule 23 (expr -> expr NEQ expr .)
+    NEQ             reduce using rule 23 (expr -> expr NEQ expr .)
+    AND             reduce using rule 23 (expr -> expr NEQ expr .)
+    OR              reduce using rule 23 (expr -> expr NEQ expr .)
+    DER_PAREN       reduce using rule 23 (expr -> expr NEQ expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+
+  ! SUMA            [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! RESTA           [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! MULT            [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! DIV             [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! MOD             [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! LT              [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! GT              [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! LE              [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! GE              [ reduce using rule 23 (expr -> expr NEQ expr .) ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 70
+
+    (24) expr -> expr LT expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 24 (expr -> expr LT expr .)
+    EQ              reduce using rule 24 (expr -> expr LT expr .)
+    NEQ             reduce using rule 24 (expr -> expr LT expr .)
+    LT              reduce using rule 24 (expr -> expr LT expr .)
+    GT              reduce using rule 24 (expr -> expr LT expr .)
+    LE              reduce using rule 24 (expr -> expr LT expr .)
+    GE              reduce using rule 24 (expr -> expr LT expr .)
+    AND             reduce using rule 24 (expr -> expr LT expr .)
+    OR              reduce using rule 24 (expr -> expr LT expr .)
+    DER_PAREN       reduce using rule 24 (expr -> expr LT expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+
+  ! SUMA            [ reduce using rule 24 (expr -> expr LT expr .) ]
+  ! RESTA           [ reduce using rule 24 (expr -> expr LT expr .) ]
+  ! MULT            [ reduce using rule 24 (expr -> expr LT expr .) ]
+  ! DIV             [ reduce using rule 24 (expr -> expr LT expr .) ]
+  ! MOD             [ reduce using rule 24 (expr -> expr LT expr .) ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 71
+
+    (25) expr -> expr GT expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 25 (expr -> expr GT expr .)
+    EQ              reduce using rule 25 (expr -> expr GT expr .)
+    NEQ             reduce using rule 25 (expr -> expr GT expr .)
+    LT              reduce using rule 25 (expr -> expr GT expr .)
+    GT              reduce using rule 25 (expr -> expr GT expr .)
+    LE              reduce using rule 25 (expr -> expr GT expr .)
+    GE              reduce using rule 25 (expr -> expr GT expr .)
+    AND             reduce using rule 25 (expr -> expr GT expr .)
+    OR              reduce using rule 25 (expr -> expr GT expr .)
+    DER_PAREN       reduce using rule 25 (expr -> expr GT expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+
+  ! SUMA            [ reduce using rule 25 (expr -> expr GT expr .) ]
+  ! RESTA           [ reduce using rule 25 (expr -> expr GT expr .) ]
+  ! MULT            [ reduce using rule 25 (expr -> expr GT expr .) ]
+  ! DIV             [ reduce using rule 25 (expr -> expr GT expr .) ]
+  ! MOD             [ reduce using rule 25 (expr -> expr GT expr .) ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 72
+
+    (26) expr -> expr LE expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 26 (expr -> expr LE expr .)
+    EQ              reduce using rule 26 (expr -> expr LE expr .)
+    NEQ             reduce using rule 26 (expr -> expr LE expr .)
+    LT              reduce using rule 26 (expr -> expr LE expr .)
+    GT              reduce using rule 26 (expr -> expr LE expr .)
+    LE              reduce using rule 26 (expr -> expr LE expr .)
+    GE              reduce using rule 26 (expr -> expr LE expr .)
+    AND             reduce using rule 26 (expr -> expr LE expr .)
+    OR              reduce using rule 26 (expr -> expr LE expr .)
+    DER_PAREN       reduce using rule 26 (expr -> expr LE expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+
+  ! SUMA            [ reduce using rule 26 (expr -> expr LE expr .) ]
+  ! RESTA           [ reduce using rule 26 (expr -> expr LE expr .) ]
+  ! MULT            [ reduce using rule 26 (expr -> expr LE expr .) ]
+  ! DIV             [ reduce using rule 26 (expr -> expr LE expr .) ]
+  ! MOD             [ reduce using rule 26 (expr -> expr LE expr .) ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 73
+
+    (27) expr -> expr GE expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 27 (expr -> expr GE expr .)
+    EQ              reduce using rule 27 (expr -> expr GE expr .)
+    NEQ             reduce using rule 27 (expr -> expr GE expr .)
+    LT              reduce using rule 27 (expr -> expr GE expr .)
+    GT              reduce using rule 27 (expr -> expr GE expr .)
+    LE              reduce using rule 27 (expr -> expr GE expr .)
+    GE              reduce using rule 27 (expr -> expr GE expr .)
+    AND             reduce using rule 27 (expr -> expr GE expr .)
+    OR              reduce using rule 27 (expr -> expr GE expr .)
+    DER_PAREN       reduce using rule 27 (expr -> expr GE expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+
+  ! SUMA            [ reduce using rule 27 (expr -> expr GE expr .) ]
+  ! RESTA           [ reduce using rule 27 (expr -> expr GE expr .) ]
+  ! MULT            [ reduce using rule 27 (expr -> expr GE expr .) ]
+  ! DIV             [ reduce using rule 27 (expr -> expr GE expr .) ]
+  ! MOD             [ reduce using rule 27 (expr -> expr GE expr .) ]
+  ! EQ              [ shift and go to state 47 ]
+  ! NEQ             [ shift and go to state 48 ]
+  ! LT              [ shift and go to state 49 ]
+  ! GT              [ shift and go to state 50 ]
+  ! LE              [ shift and go to state 51 ]
+  ! GE              [ shift and go to state 52 ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 74
+
+    (28) expr -> expr AND expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 28 (expr -> expr AND expr .)
+    AND             reduce using rule 28 (expr -> expr AND expr .)
+    OR              reduce using rule 28 (expr -> expr AND expr .)
+    DER_PAREN       reduce using rule 28 (expr -> expr AND expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+
+  ! SUMA            [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! RESTA           [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! MULT            [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! DIV             [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! MOD             [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! EQ              [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! NEQ             [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! LT              [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! GT              [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! LE              [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! GE              [ reduce using rule 28 (expr -> expr AND expr .) ]
+  ! AND             [ shift and go to state 53 ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 75
+
+    (29) expr -> expr OR expr .
+    (17) expr -> expr . SUMA expr
+    (18) expr -> expr . RESTA expr
+    (19) expr -> expr . MULT expr
+    (20) expr -> expr . DIV expr
+    (21) expr -> expr . MOD expr
+    (22) expr -> expr . EQ expr
+    (23) expr -> expr . NEQ expr
+    (24) expr -> expr . LT expr
+    (25) expr -> expr . GT expr
+    (26) expr -> expr . LE expr
+    (27) expr -> expr . GE expr
+    (28) expr -> expr . AND expr
+    (29) expr -> expr . OR expr
+
+    PUNTO_COMA      reduce using rule 29 (expr -> expr OR expr .)
+    OR              reduce using rule 29 (expr -> expr OR expr .)
+    DER_PAREN       reduce using rule 29 (expr -> expr OR expr .)
+    SUMA            shift and go to state 42
+    RESTA           shift and go to state 43
+    MULT            shift and go to state 44
+    DIV             shift and go to state 45
+    MOD             shift and go to state 46
+    EQ              shift and go to state 47
+    NEQ             shift and go to state 48
+    LT              shift and go to state 49
+    GT              shift and go to state 50
+    LE              shift and go to state 51
+    GE              shift and go to state 52
+    AND             shift and go to state 53
+
+  ! SUMA            [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! RESTA           [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! MULT            [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! DIV             [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! MOD             [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! EQ              [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! NEQ             [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! LT              [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! GT              [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! LE              [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! GE              [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! AND             [ reduce using rule 29 (expr -> expr OR expr .) ]
+  ! OR              [ shift and go to state 54 ]
+
+
+state 76
+
+    (31) expr -> IZQ_PAREN expr DER_PAREN .
+
+    PUNTO_COMA      reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    SUMA            reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    RESTA           reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    MULT            reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    DIV             reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    MOD             reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    EQ              reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    NEQ             reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    LT              reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    GT              reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    LE              reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    GE              reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    AND             reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    OR              reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+    DER_PAREN       reduce using rule 31 (expr -> IZQ_PAREN expr DER_PAREN .)
+
+
+state 77
+
+    (9) sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .
+
+    INT             reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    FLOAT           reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    BOOL            reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    STRING          reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 9 (sentencia -> FLOAT ID ASIGNACION expr PUNTO_COMA .)
+
+
+state 78
+
+    (10) sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .
+
+    INT             reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    FLOAT           reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    BOOL            reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    STRING          reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 10 (sentencia -> BOOL ID ASIGNACION expr PUNTO_COMA .)
+
+
+state 79
+
+    (11) sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .
+
+    INT             reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    FLOAT           reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    BOOL            reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    STRING          reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    ID              reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    IF              reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    WHILE           reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    IZQ_BRACE       reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    $end            reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    DER_BRACE       reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+    ELSE            reduce using rule 11 (sentencia -> STRING ID ASIGNACION expr PUNTO_COMA .)
+
+
+state 80
+
+    (13) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .
+    (14) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia . ELSE sentencia
+
+    INT             reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    FLOAT           reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    BOOL            reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    STRING          reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    ID              reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    IF              reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    WHILE           reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    IZQ_BRACE       reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    $end            reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    DER_BRACE       reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .)
+    ELSE            shift and go to state 82
+
+  ! ELSE            [ reduce using rule 13 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia .) ]
+
+
+state 81
+
+    (15) sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .
+
+    INT             reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    FLOAT           reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    BOOL            reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    STRING          reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    ID              reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    IF              reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    WHILE           reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    IZQ_BRACE       reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    $end            reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    DER_BRACE       reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+    ELSE            reduce using rule 15 (sentencia -> WHILE IZQ_PAREN expr DER_PAREN sentencia .)
+
+
+state 82
+
+    (14) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE . sentencia
+    (4) sentencia -> . INT ID PUNTO_COMA
+    (5) sentencia -> . FLOAT ID PUNTO_COMA
+    (6) sentencia -> . BOOL ID PUNTO_COMA
+    (7) sentencia -> . STRING ID PUNTO_COMA
+    (8) sentencia -> . INT ID ASIGNACION expr PUNTO_COMA
+    (9) sentencia -> . FLOAT ID ASIGNACION expr PUNTO_COMA
+    (10) sentencia -> . BOOL ID ASIGNACION expr PUNTO_COMA
+    (11) sentencia -> . STRING ID ASIGNACION expr PUNTO_COMA
+    (12) sentencia -> . ID ASIGNACION expr PUNTO_COMA
+    (13) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia
+    (14) sentencia -> . IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia
+    (15) sentencia -> . WHILE IZQ_PAREN expr DER_PAREN sentencia
+    (16) sentencia -> . IZQ_BRACE lista_sentencias DER_BRACE
+
+    INT             shift and go to state 4
+    FLOAT           shift and go to state 6
+    BOOL            shift and go to state 7
+    STRING          shift and go to state 8
+    ID              shift and go to state 5
+    IF              shift and go to state 9
+    WHILE           shift and go to state 10
+    IZQ_BRACE       shift and go to state 11
+
+    sentencia                      shift and go to state 83
+
+state 83
+
+    (14) sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .
+
+    INT             reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    FLOAT           reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    BOOL            reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    STRING          reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    ID              reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    IF              reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    WHILE           reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    IZQ_BRACE       reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    $end            reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    DER_BRACE       reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+    ELSE            reduce using rule 14 (sentencia -> IF IZQ_PAREN expr DER_PAREN sentencia ELSE sentencia .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for SUMA in state 55 resolved as shift
+WARNING: shift/reduce conflict for RESTA in state 55 resolved as shift
+WARNING: shift/reduce conflict for MULT in state 55 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 55 resolved as shift
+WARNING: shift/reduce conflict for MOD in state 55 resolved as shift
+WARNING: shift/reduce conflict for EQ in state 55 resolved as shift
+WARNING: shift/reduce conflict for NEQ in state 55 resolved as shift
+WARNING: shift/reduce conflict for LT in state 55 resolved as shift
+WARNING: shift/reduce conflict for GT in state 55 resolved as shift
+WARNING: shift/reduce conflict for LE in state 55 resolved as shift
+WARNING: shift/reduce conflict for GE in state 55 resolved as shift
+WARNING: shift/reduce conflict for AND in state 55 resolved as shift
+WARNING: shift/reduce conflict for OR in state 55 resolved as shift

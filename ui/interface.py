@@ -3,7 +3,7 @@ import os
 from lexer.lexer import lexer, lex_errors
 from parser.parser import parser
 import ast_nodes
-
+from semantic.semantic import SemanticAnalyzer  # Importar el analizador semántico
 
 app = Flask(__name__, 
             template_folder=os.path.join(os.path.dirname(__file__),'templates'),
@@ -18,9 +18,11 @@ def compile_code():
     data = request.get_json() or {}
     code = data.get('code', '')
 
+    # Limpiar errores previos
     lex_errors.clear()
     lexer.input(code)
 
+    # Análisis léxico
     tokens = []
     for tok in lexer:
         tokens.append({
@@ -31,16 +33,27 @@ def compile_code():
         })
 
     errors = lex_errors.copy()
+    ast_root = None
 
+    # Análisis sintáctico
     try:
         ast_root = parser.parse(code, lexer=lexer)
     except SyntaxError as e:
-        errors.append(str(e))
-        
-    return jsonify(tokens=tokens, errors=errors)
-if __name__ == '__main__':
-    app.run(debug=True)
+        errors.append(f"Error de sintaxis: {str(e)}")
     
+    # Análisis semántico (solo si no hay errores léxicos/sintácticos)
+    semantic_errors = []
+    if ast_root and not errors:
+        analyzer = SemanticAnalyzer()
+        semantic_errors = analyzer.analyze(ast_root)
+        errors.extend(semantic_errors)
+
+    return jsonify({
+        'tokens': tokens,
+        'errors': errors,
+        'has_semantic_errors': len(semantic_errors) > 0
+    })
+
 def ast_to_dot(node, lines=None, counter=None, parent_id=None):
     """
     Recorre recursivamente tu AST y genera las líneas DOT.
@@ -84,10 +97,18 @@ def get_ast():
         # Devuelve 400 con mensaje de error
         return jsonify(error=str(e)), 400
 
-    # 3) Genera DOT
+    # 3) Verificación semántica
+    analyzer = SemanticAnalyzer()
+    semantic_errors = analyzer.analyze(ast_root)
+    if semantic_errors:
+        return jsonify(error="\n".join(semantic_errors)), 400
+
+    # 4) Genera DOT
     lines = ['digraph AST {', 'node [shape=box];']
     lines += ast_to_dot(ast_root)
     lines.append('}')
 
     return jsonify(dot="\n".join(lines))
 
+if __name__ == '__main__':
+    app.run(debug=True)
