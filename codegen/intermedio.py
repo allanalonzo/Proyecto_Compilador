@@ -2,16 +2,13 @@ from ast_nodes import Program, Declaration, Assignment, BinaryOp, Identifier, Li
 
 class Generador3AC:
     def __init__(self):
-        self.code = []
-        self.temp_counter = 0
-
-    def get_code(self):
-        return self.code
+        self.temp_count = 0
+        self.codigo = []
 
     def new_temp(self):
-        t = f"t{self.temp_counter}"
-        self.temp_counter += 1
-        return t
+        temp = f"t{self.temp_count}"
+        self.temp_count += 1
+        return temp
 
     def generar(self, node):
         if isinstance(node, Program):
@@ -19,25 +16,30 @@ class Generador3AC:
                 self.generar(stmt)
 
         elif isinstance(node, Declaration):
-            self.code.append(f"{node.identifier.name} = 0")
+            if node.expression is not None:
+                temp = self.generar(node.expression)
+                self.codigo.append(f"{node.identifier.name} = {temp}")
+            else:
+                self.codigo.append(f"{node.identifier.name} = 0")  # Valor por defecto
 
         elif isinstance(node, Assignment):
-            expr_result = self.generar(node.expression)
-            self.code.append(f"{node.identifier.name} = {expr_result}")
+            temp = self.generar(node.expression)
+            self.codigo.append(f"{node.identifier.name} = {temp}")
 
         elif isinstance(node, BinaryOp):
             left = self.generar(node.left)
             right = self.generar(node.right)
             temp = self.new_temp()
-            self.code.append(f"{temp} = {left} {node.operator} {right}")
+            self.codigo.append(f"{temp} = {left} {node.operator} {right}")
+            return temp
+
+        elif isinstance(node, Literal):
+            temp = self.new_temp()
+            self.codigo.append(f"{temp} = {node.value}")
             return temp
 
         elif isinstance(node, Identifier):
             return node.name
 
-        elif isinstance(node, Constant):
-            return str(node.value)
-
-        else:
-            self.code.append(f"# Nodo no soportado: {type(node).__name__}")
-
+    def obtener_codigo(self):
+        return "\n".join(self.codigo)
