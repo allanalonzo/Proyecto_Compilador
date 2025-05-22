@@ -1,4 +1,4 @@
-from ast_nodes import Program, Declaration, Assignment, BinaryOp, Identifier, Constant
+from ast_nodes import Program, Declaration, Assignment, BinaryOp, Identifier, Literal
 
 class Generador3AC:
     def __init__(self):

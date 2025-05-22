@@ -52,3 +52,8 @@ class String(Node):
 class Identifier(Node):
     def __init__(self, name):
         self.name = name
+
+class Literal(Node):
+    def __init__(self, value):
+        self.value = value
+
