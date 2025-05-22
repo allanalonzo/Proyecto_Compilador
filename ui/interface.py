@@ -3,11 +3,12 @@ import os
 from lexer.lexer import lexer, lex_errors
 from parser.parser import parser
 import ast_nodes
-from semantic.semantic import SemanticAnalyzer  # Importar el analizador semántico
+from semantic.semantic import SemanticAnalyzer
+from codegen.intermedio import Generador3AC
 
 app = Flask(__name__, 
-            template_folder=os.path.join(os.path.dirname(__file__),'templates'),
-            static_folder=os.path.join(os.path.dirname(__file__),'static'))
+            template_folder=os.path.join(os.path.dirname(__file__), 'templates'),
+            static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 
 @app.route('/')
 def index():
@@ -18,64 +19,62 @@ def compile_code():
     data = request.get_json() or {}
     code = data.get('code', '')
 
-    # Limpiar errores previos
     lex_errors.clear()
     lexer.input(code)
 
-    # Análisis léxico
     tokens = []
     for tok in lexer:
         tokens.append({
-            'type':   tok.type,
-            'value':  tok.value,
-            'line':   tok.lineno,
+            'type': tok.type,
+            'value': tok.value,
+            'line': tok.lineno,
             'column': tok.lexpos
         })
 
     errors = lex_errors.copy()
     ast_root = None
+    semantic_errors = []
+    intermediate_code = []
 
-    # Análisis sintáctico
     try:
         ast_root = parser.parse(code, lexer=lexer)
     except SyntaxError as e:
         errors.append(f"Error de sintaxis: {str(e)}")
-    
-    # Análisis semántico (solo si no hay errores léxicos/sintácticos)
-    semantic_errors = []
+
     if ast_root and not errors:
         analyzer = SemanticAnalyzer()
         semantic_errors = analyzer.analyze(ast_root)
         errors.extend(semantic_errors)
 
+        if not semantic_errors:
+            generador = Generador3AC()
+            generador.generar(ast_root)
+            intermediate_code = generador.get_code()
+
     return jsonify({
         'tokens': tokens,
         'errors': errors,
-        'has_semantic_errors': len(semantic_errors) > 0
+        'has_semantic_errors': len(semantic_errors) > 0,
+        'intermediate_code': intermediate_code
     })
 
 def ast_to_dot(node, lines=None, counter=None, parent_id=None):
-    """
-    Recorre recursivamente tu AST y genera las líneas DOT.
-    """
-    if lines is None:   lines = []
-    if counter is None: counter = {'n': 0}
+    if lines is None:
+        lines = []
+    if counter is None:
+        counter = {'n': 0}
 
     node_id = f"n{counter['n']}"
     counter['n'] += 1
 
-    # Etiqueta con el nombre de la clase, ej "If" o "BinaryOp"
     lines.append(f'{node_id} [label="{type(node).__name__}"];')
 
     if parent_id:
         lines.append(f'{parent_id} -> {node_id};')
 
-    # Para cada atributo del nodo
     for attr, val in vars(node).items():
-        # Si es un subnodo AST
         if isinstance(val, ast_nodes.Node):
             ast_to_dot(val, lines, counter, node_id)
-        # Si es lista de subnodos
         elif isinstance(val, list):
             for child in val:
                 if isinstance(child, ast_nodes.Node):
@@ -87,23 +86,18 @@ def get_ast():
     data = request.get_json() or {}
     code = data.get('code', '')
 
-    # 1) Tokeniza (limpio errores léxicos)
     lexer.input(code)
 
-    # 2) Parseo
     try:
         ast_root = parser.parse(code, lexer=lexer)
     except Exception as e:
-        # Devuelve 400 con mensaje de error
         return jsonify(error=str(e)), 400
 
-    # 3) Verificación semántica
     analyzer = SemanticAnalyzer()
     semantic_errors = analyzer.analyze(ast_root)
     if semantic_errors:
         return jsonify(error="\n".join(semantic_errors)), 400
 
-    # 4) Genera DOT
     lines = ['digraph AST {', 'node [shape=box];']
     lines += ast_to_dot(ast_root)
     lines.append('}')

@@ -33,7 +33,6 @@ function highlightCode(code, tokens) {
   return result;
 }
 
-
 function renderTokens(tokens) {
   const tbody = document.querySelector('#tokens-table tbody');
   tbody.innerHTML = '';
@@ -86,7 +85,6 @@ document.getElementById('btn-show-ast').addEventListener('click', () => {
     container.innerHTML = '';            
     container.appendChild(svgElement);   
     document.getElementById('ast-modal').classList.remove('hidden');
-    
 
     document.getElementById('btn-download-ast')
       .onclick = () => {
@@ -106,3 +104,28 @@ document.getElementById('btn-show-ast').addEventListener('click', () => {
 document.getElementById('close-ast').addEventListener('click', () => {
   document.getElementById('ast-modal').classList.add('hidden');
 });
+
+function mostrar3AC() {
+  const codigo = document.getElementById('code-input').innerText;
+
+  fetch('/api/compile', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({code: codigo})
+  })
+  .then(res => res.json())
+  .then(data => {
+    const outputDiv = document.getElementById('intermediate-code');
+
+    if (data.intermediate_code && data.intermediate_code.length > 0) {
+      outputDiv.textContent = data.intermediate_code.join('\n');
+    } else if (data.errors && data.errors.length > 0) {
+      outputDiv.textContent = "Errores:\n" + data.errors.join('\n');
+    } else {
+      outputDiv.textContent = "No se generó código intermedio.";
+    }
+  })
+  .catch(error => {
+    document.getElementById('intermediate-code').textContent = 'Error al comunicarse con el servidor: ' + error.message;
+  });
+}

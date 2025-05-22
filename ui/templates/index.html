@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Proyecto Compiladores</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="toolbar">
@@ -13,36 +13,37 @@
         <button id="btn-new">Nuevo</button>
         <button id="btn-compile">Compilar</button>
         <button id="btn-show-ast">Mostrar AST</button>
+        <button onclick="mostrar3AC()">Mostrar 3AC</button>
     </div>
     <div id="main">
         <div id="editor">
             <div id="code-input" contenteditable="true" class="code-editor"></div>
         </div>          
         <div id="sidebar">
-        <h3>Tabla de Tokens</h3>
-        <table id="tokens-table">
-        <thead>
-            <tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr>
-        </thead>
-        <tbody></tbody>
-        </table>
-
+            <h3>Tabla de Tokens</h3>
+            <table id="tokens-table">
+                <thead>
+                    <tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
+
     <div id="errors">Salida de errores</div>
+
+    <div id="intermediate-code" style="background: #f4f4f4; padding: 10px; margin: 10px; border: 1px solid #ccc; white-space: pre-wrap;"></div>
 
     <div id="ast-modal" class="modal hidden">
         <div class="modal-content">
-        <span id="close-ast" class="close">&times;</span>
-        <div id="ast-container"></div>
-        <button id="btn-download-ast">Exportar SVG</button>
+            <span id="close-ast" class="close">&times;</span>
+            <div id="ast-container"></div>
+            <button id="btn-download-ast">Exportar SVG</button>
         </div>
     </div>
     
     <script src="https://unpkg.com/viz.js@2.1.2/viz.js"></script>
     <script src="https://unpkg.com/viz.js@2.1.2/full.render.js"></script>
-
     <script src="{{ url_for('static', filename='js/interface.js') }}"></script>
-
 </body>
 </html>
