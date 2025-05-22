@@ -41,5 +41,5 @@ class Generador3AC:
         elif isinstance(node, Identifier):
             return node.name
 
-    def obtener_codigo(self):
+    def get_code(self):
         return "\n".join(self.codigo)

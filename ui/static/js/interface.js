@@ -118,7 +118,7 @@ function mostrar3AC() {
     const outputDiv = document.getElementById('intermediate-code');
 
     if (data.intermediate_code && data.intermediate_code.length > 0) {
-      outputDiv.textContent = data.intermediate_code.join('\n');
+      outputDiv.textContent = data.intermediate_code;
     } else if (data.errors && data.errors.length > 0) {
       outputDiv.textContent = "Errores:\n" + data.errors.join('\n');
     } else {
