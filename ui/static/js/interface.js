@@ -1,4 +1,5 @@
 const reservedTypes = ['IF','ELSE','WHILE','FOR','INT','RETURN','CHAR'];
+
 function escapeHtml(str) {
   return str.replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -13,9 +14,7 @@ function highlightCode(code, tokens) {
   tokens.forEach(tok => {
     const start = tok.column;
     const text  = tok.value.toString();
-
     result += escapeHtml(code.slice(lastIndex, start));
-
     let cls;
     if (tok.type === 'error') {
       cls = 'token-error';
@@ -24,7 +23,6 @@ function highlightCode(code, tokens) {
     } else {
       cls = `token-${tok.type}`;
     }
-
     result += `<span class="${cls}">${escapeHtml(text)}</span>`;
     lastIndex = start + text.length;
   });
@@ -49,7 +47,7 @@ function renderTokens(tokens) {
 
 document.getElementById('btn-compile').addEventListener('click', () => {
   const editor = document.getElementById('code-input');
-  const code   = editor.innerText; 
+  const code   = editor.innerText;
   fetch('/api/compile', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -82,21 +80,23 @@ document.getElementById('btn-show-ast').addEventListener('click', () => {
   })
   .then(svgElement => {
     const container = document.getElementById('ast-container');
-    container.innerHTML = '';            
-    container.appendChild(svgElement);   
+    container.innerHTML = '';
+    container.appendChild(svgElement);
     document.getElementById('ast-modal').classList.remove('hidden');
 
-    document.getElementById('btn-download-ast')
-      .onclick = () => {
-        const svgData = new XMLSerializer().serializeToString(svgElement);
-        const blob    = new Blob([svgData], {type: 'image/svg+xml'});
-        const url     = URL.createObjectURL(blob);
-        const a       = document.createElement('a');
-        a.href        = url;
-        a.download    = 'ast.svg';
-        a.click();
-        URL.revokeObjectURL(url);
-      };
+    const exportBtn = document.getElementById('btn-download-ast');
+    exportBtn.style.display = 'inline-block';
+
+    exportBtn.onclick = () => {
+      const svgData = new XMLSerializer().serializeToString(svgElement);
+      const blob = new Blob([svgData], {type: 'image/svg+xml'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ast.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
   })
   .catch(err => alert(err.message));
 });
@@ -107,7 +107,6 @@ document.getElementById('close-ast').addEventListener('click', () => {
 
 function mostrar3AC() {
   const codigo = document.getElementById('code-input').innerText;
-
   fetch('/api/compile', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -115,15 +114,24 @@ function mostrar3AC() {
   })
   .then(res => res.json())
   .then(data => {
-    const outputDiv = document.getElementById('intermediate-code');
+    const container = document.getElementById('ast-container');
+    const modal = document.getElementById('ast-modal');
+    const exportBtn = document.getElementById('btn-download-ast');
+    container.innerHTML = '';
+    exportBtn.style.display = 'none';
 
-    if (data.intermediate_code && data.intermediate_code.length > 0) {
-      outputDiv.textContent = data.intermediate_code;
+    const pre = document.createElement('pre');
+
+    if (Array.isArray(data.intermediate_code) && data.intermediate_code.length > 0) {
+      pre.textContent = data.intermediate_code.join('\n');
     } else if (data.errors && data.errors.length > 0) {
-      outputDiv.textContent = "Errores:\n" + data.errors.join('\n');
+      pre.textContent = "Errores:\n" + data.errors.join('\n');
     } else {
-      outputDiv.textContent = "No se generó código intermedio.";
+      pre.textContent = "No se generó código intermedio.";
     }
+
+    container.appendChild(pre);
+    modal.classList.remove('hidden');
   })
   .catch(error => {
     document.getElementById('intermediate-code').textContent = 'Error al comunicarse con el servidor: ' + error.message;
