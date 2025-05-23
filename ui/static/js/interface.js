@@ -47,7 +47,7 @@ function renderTokens(tokens) {
 
 document.getElementById('btn-compile').addEventListener('click', () => {
   const editor = document.getElementById('code-input');
-  const code   = editor.innerText;
+  const code   = editor.innerText; 
   fetch('/api/compile', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -80,8 +80,8 @@ document.getElementById('btn-show-ast').addEventListener('click', () => {
   })
   .then(svgElement => {
     const container = document.getElementById('ast-container');
-    container.innerHTML = '';
-    container.appendChild(svgElement);
+    container.innerHTML = '';            
+    container.appendChild(svgElement);   
     document.getElementById('ast-modal').classList.remove('hidden');
 
     const exportBtn = document.getElementById('btn-download-ast');
@@ -89,11 +89,11 @@ document.getElementById('btn-show-ast').addEventListener('click', () => {
 
     exportBtn.onclick = () => {
       const svgData = new XMLSerializer().serializeToString(svgElement);
-      const blob = new Blob([svgData], {type: 'image/svg+xml'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'ast.svg';
+      const blob    = new Blob([svgData], {type: 'image/svg+xml'});
+      const url     = URL.createObjectURL(blob);
+      const a       = document.createElement('a');
+      a.href        = url;
+      a.download    = 'ast.svg';
       a.click();
       URL.revokeObjectURL(url);
     };
@@ -107,6 +107,7 @@ document.getElementById('close-ast').addEventListener('click', () => {
 
 function mostrar3AC() {
   const codigo = document.getElementById('code-input').innerText;
+
   fetch('/api/compile', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -116,14 +117,16 @@ function mostrar3AC() {
   .then(data => {
     const container = document.getElementById('ast-container');
     const modal = document.getElementById('ast-modal');
-    const exportBtn = document.getElementById('btn-download-ast');
     container.innerHTML = '';
-    exportBtn.style.display = 'none';
+
+    document.getElementById('btn-download-ast').style.display = 'none';
 
     const pre = document.createElement('pre');
 
-    if (Array.isArray(data.intermediate_code) && data.intermediate_code.length > 0) {
-      pre.textContent = data.intermediate_code.join('\n');
+    if (data.intermediate_code && data.intermediate_code.length > 0) {
+      pre.textContent = Array.isArray(data.intermediate_code)
+        ? data.intermediate_code.join('\n')
+        : data.intermediate_code;
     } else if (data.errors && data.errors.length > 0) {
       pre.textContent = "Errores:\n" + data.errors.join('\n');
     } else {
@@ -134,6 +137,8 @@ function mostrar3AC() {
     modal.classList.remove('hidden');
   })
   .catch(error => {
-    document.getElementById('intermediate-code').textContent = 'Error al comunicarse con el servidor: ' + error.message;
+    document.getElementById('intermediate-code').textContent =
+      'Error al comunicarse con el servidor: ' + error.message;
   });
 }
+
