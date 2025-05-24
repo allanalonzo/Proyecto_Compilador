@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Proyecto Compiladores</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Monaco Editor loader desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/loader.js"></script>
 </head>
 <body>
     <div id="toolbar">
@@ -16,33 +19,34 @@
     </div>
     <div id="main">
         <div id="editor">
-            <div id="code-input" contenteditable="true" class="code-editor"></div>
+            <div id="code-input" class="code-editor"></div>
         </div>          
         <div id="sidebar">
-        <h3>Tabla de Tokens</h3>
-        <table id="tokens-table">
-        <thead>
-            <tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr>
-        </thead>
-        <tbody></tbody>
-        </table>
-
+            <h3>Tabla de Tokens</h3>
+            <table id="tokens-table">
+                <thead>
+                    <tr><th>Componente</th><th>Lexema</th><th>Línea,Columna</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
     <div id="errors">Salida de errores</div>
 
     <div id="ast-modal" class="modal hidden">
         <div class="modal-content">
-        <span id="close-ast" class="close">&times;</span>
-        <div id="ast-container"></div>
-        <button id="btn-download-ast">Exportar SVG</button>
+            <span id="close-ast" class="close">&times;</span>
+            <div id="ast-container"></div>
+            <button id="btn-download-ast">Exportar SVG</button>
         </div>
     </div>
     
+    <!-- Viz.js para graficar AST -->
     <script src="https://unpkg.com/viz.js@2.1.2/viz.js"></script>
     <script src="https://unpkg.com/viz.js@2.1.2/full.render.js"></script>
 
+    <!-- Lógica de interfaz general -->
     <script src="{{ url_for('static', filename='js/interface.js') }}"></script>
-
 </body>
 </html>
+

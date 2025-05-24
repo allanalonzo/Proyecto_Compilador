@@ -49,3 +49,28 @@ th, td { border: 1px solid #ccc; padding: 4px; text-align: left; }
 #ast-container svg {
     width: 100%; height: auto;
 }
+/* Ajusta el layout principal */
+#main {
+  display: flex;
+  height: calc(100vh - 50px); /* asume 50px de toolbar; modifica según tu caso */
+}
+
+/* El panel de código ocupa todo el espacio disponible */
+#editor {
+  flex: 1;
+  min-width: 0;          /* ¡imprescindible! permite que el hijo encoja y active scroll */
+  position: relative;    
+  overflow: hidden;      /* oculta cualquier “overflow” del contenedor */
+}
+
+/* El div donde Monaco se monta */
+#code-input {
+  width: 100%;
+  height: 100%;
+}
+
+/* Sidebar fijo */
+#sidebar {
+  width: 300px;
+  overflow-y: auto;
+}
