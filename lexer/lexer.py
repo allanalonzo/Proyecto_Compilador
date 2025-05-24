@@ -1,4 +1,17 @@
 import ply.lex as lex
+class Lexer:
+    def __init__(self, code=''):
+        self.reset(code)
+
+    def reset(self, code):
+        self.code         = code
+        self.pos          = 0
+        self.line         = 1
+        self.column       = 1
+        self.current_char = self.code[self.pos] if self.code else None
+        self.tokens       = []
+        self.errors       = []
+
 
 tokens = [
     'ID',
