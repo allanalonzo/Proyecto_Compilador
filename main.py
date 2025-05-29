@@ -4,6 +4,11 @@ import importlib
 import ply.lex as lex
 import ply.yacc as yacc
 
+# 1) Importación del optimizador CSE
+from codegen.optimizer import CSEOptimizer
+from codegen.optimizer_constant_folding import ConstantFoldingOptimizer
+from codegen.optimizer_dce import DeadCodeElimOptimizer
+
 class CompilerServer:
     def __init__(self):
         # Inicializa la aplicación Flask con rutas a UI
@@ -49,7 +54,9 @@ class CompilerServer:
 
             ast_root = None
             semantic_errors = []
+            # Lista que contendrá el código intermedio (raw y optimizado)
             intermediate_code = []
+            optimized_code = []
 
             # Genera AST
             try:
@@ -61,6 +68,7 @@ class CompilerServer:
             if ast_root and not errors:
                 from semantic.semantic import SemanticAnalyzer
                 from codegen.intermedio import Generador3AC
+
                 analyzer = SemanticAnalyzer()
                 semantic_errors = analyzer.analyze(ast_root)
                 errors.extend(semantic_errors)
@@ -68,13 +76,32 @@ class CompilerServer:
                 if not semantic_errors:
                     generador = Generador3AC()
                     generador.generar(ast_root)
-                    intermediate_code = generador.get_code()
+
+                    # 2) Obtener y normalizar el código intermedio
+                    raw_output = generador.get_code()
+                    if isinstance(raw_output, str):
+                        # si get_code devolvía un string, lo dividimos en líneas
+                        intermediate_code = raw_output.splitlines()
+                    else:
+                        # si ya es lista, lo usamos directamente
+                        intermediate_code = raw_output
+
+                    # 3) Aplicar optimización CSE
+                    optimizer = CSEOptimizer()
+                    optimized_code = optimizer.optimize(intermediate_code)
+                    #Constant Folding
+                    cf_optimizer = ConstantFoldingOptimizer()
+                    optimized_code = cf_optimizer.optimize(optimized_code)
+                    # 3) Dead-Code Elimination
+                    dce_optimizer = DeadCodeElimOptimizer()
+                    optimized_code = dce_optimizer.optimize(optimized_code)
 
             return jsonify({
                 'tokens': tokens,
                 'errors': errors,
                 'has_semantic_errors': bool(semantic_errors),
-                'intermediate_code': intermediate_code
+                'intermediate_code': intermediate_code,
+                'optimized_code': optimized_code
             })
 
         @self.app.route('/api/ast', methods=['POST'])

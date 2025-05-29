@@ -1,3 +1,4 @@
+# codegen/intermedio.py
 from ast_nodes import (
     Program, Declaration, Assignment, BinaryOp,
     Identifier, Number, Boolean, String, If, While, Block
@@ -7,6 +8,7 @@ class Generador3AC:
     def __init__(self, modo_debug=False):
         self.temp_count = 0
         self.label_count = 0
+        # Lista que contendrá instrucciones: tuplas de 4 elementos o strings para saltos/etiquetas
         self.codigo = []
         self.simbolos = {}
         self.debug = modo_debug
@@ -22,6 +24,7 @@ class Generador3AC:
         return label
 
     def emitir(self, instruccion):
+        # instruccion: tupla (op, arg1, arg2, res) o string (saltos/etiquetas)
         self.codigo.append(instruccion)
         if self.debug:
             print(f"[DEBUG] {instruccion}")
@@ -34,40 +37,46 @@ class Generador3AC:
         elif isinstance(node, Declaration):
             valor = self.generar(node.expression) if node.expression else "0"
             self.simbolos[node.identifier.name] = valor
-            self.emitir(f"{node.identifier.name} = {valor}")
+            # ('=', fuente, None, destino)
+            self.emitir(('=', valor, None, node.identifier.name))
 
         elif isinstance(node, Assignment):
             valor = self.generar(node.expression)
             self.simbolos[node.identifier.name] = valor
-            self.emitir(f"{node.identifier.name} = {valor}")
+            self.emitir(('=', valor, None, node.identifier.name))
 
         elif isinstance(node, BinaryOp):
             izq = self.generar(node.left)
-            der = self.generar(node.right) if node.right is not None else ""
+            der = self.generar(node.right) if node.right is not None else None
             temp = self.nueva_temporal()
-            if der:  # operación binaria
-                self.emitir(f"{temp} = {izq} {node.operator} {der}")
-            else:  # operación unaria como !x
-                self.emitir(f"{temp} = {node.operator}{izq}")
+            if der is not None:
+                # (operador, arg1, arg2, resultado)
+                self.emitir((node.operator, izq, der, temp))
+            else:
+                # Unario: ('!', operando, None, temp)
+                self.emitir((node.operator, izq, None, temp))
             return temp
 
         elif isinstance(node, Number):
             temp = self.nueva_temporal()
-            self.emitir(f"{temp} = {node.value}")
+            # ('=', valor, None, temp)
+            self.emitir(('=', node.value, None, temp))
             return temp
 
         elif isinstance(node, Boolean):
             temp = self.nueva_temporal()
-            valor = '1' if node.value else '0'
-            self.emitir(f"{temp} = {valor}")
+            valor = 1 if node.value else 0
+            self.emitir(('=', valor, None, temp))
             return temp
 
         elif isinstance(node, String):
             temp = self.nueva_temporal()
-            self.emitir(f'{temp} = "{node.value}"')
+            # Representamos cadenas literales como strings en el argumento
+            self.emitir(('=', f'"{node.value}"', None, temp))
             return temp
 
         elif isinstance(node, Identifier):
+            # Devuelve el valor si existe, o el nombre
             return self.simbolos.get(node.name, node.name)
 
         elif isinstance(node, If):
@@ -76,6 +85,7 @@ class Generador3AC:
             etiqueta_sino = self.nueva_etiqueta() if node.else_branch else None
             etiqueta_fin = self.nueva_etiqueta()
 
+            # Saltos condicionales y etiquetas como strings
             self.emitir(f"if {cond} goto {etiqueta_si}")
             if etiqueta_sino:
                 self.emitir(f"goto {etiqueta_sino}")
@@ -114,4 +124,5 @@ class Generador3AC:
             raise Exception(f"Tipo de nodo no soportado: {type(node)}")
 
     def get_code(self):
-        return "\n".join(self.codigo)
+        # Retorna la lista de instrucciones (tuplas y strings)
+        return self.codigo

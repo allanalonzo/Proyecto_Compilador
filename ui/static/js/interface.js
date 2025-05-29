@@ -86,7 +86,6 @@ document.getElementById('btn-show-ast').addEventListener('click', () => {
 
     const exportBtn = document.getElementById('btn-download-ast');
     exportBtn.style.display = 'inline-block';
-
     exportBtn.onclick = () => {
       const svgData = new XMLSerializer().serializeToString(svgElement);
       const blob    = new Blob([svgData], {type: 'image/svg+xml'});
@@ -111,7 +110,7 @@ function mostrar3AC() {
   fetch('/api/compile', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({code: codigo})
+    body: JSON.stringify({ code: codigo })
   })
   .then(res => res.json())
   .then(data => {
@@ -124,9 +123,23 @@ function mostrar3AC() {
     const pre = document.createElement('pre');
 
     if (data.intermediate_code && data.intermediate_code.length > 0) {
-      pre.textContent = Array.isArray(data.intermediate_code)
-        ? data.intermediate_code.join('\n')
-        : data.intermediate_code;
+      // Formateamos cada instrucción
+      const lines = data.intermediate_code.map(instr => {
+        if (Array.isArray(instr)) {
+          const [op, a, b, res] = instr;
+          if (op === '=') {
+            return `${res} = ${a}`;
+          } else if (b != null && b !== '') {
+            return `${res} = ${a} ${op} ${b}`;
+          } else {
+            return `${res} = ${op}${a}`;
+          }
+        } else {
+          // es string: salto o etiqueta
+          return instr;
+        }
+      });
+      pre.textContent = lines.join('\n');
     } else if (data.errors && data.errors.length > 0) {
       pre.textContent = "Errores:\n" + data.errors.join('\n');
     } else {
@@ -140,5 +153,56 @@ function mostrar3AC() {
     document.getElementById('intermediate-code').textContent =
       'Error al comunicarse con el servidor: ' + error.message;
   });
+}
+
+
+// ----------------------------------------------------
+// Nueva función para mostrar el código optimizado
+// ----------------------------------------------------
+// ----------------------------------------------------
+// Función para mostrar el código optimizado
+// ----------------------------------------------------
+function mostrarOptimizado() {
+  const codigo = document.getElementById('code-input').innerText;
+  fetch('/api/compile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code: codigo })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const outDiv = document.getElementById('optimized-code');
+    outDiv.textContent = ''; // limpia salida previa
+
+    if (data.optimized_code && data.optimized_code.length) {
+      // Convertimos cada tupla a texto bonito
+      const lines = data.optimized_code.map(instr => {
+        if (Array.isArray(instr)) {
+          const [op, a, b, res] = instr;
+          if (op === '=') {
+            // asignaciones: ( '=', valor, null, destino )
+            return `${res} = ${a}`;
+          } else if (b != null && b !== '') {
+            // operac. binarias: (op, izq, der, temp)
+            return `${res} = ${a} ${op} ${b}`;
+          } else {
+            // unarias (!x)
+            return `${res} = ${op}${a}`;
+          }
+        } else {
+          // saltos y etiquetas llegan como string
+          return instr;
+        }
+      });
+      outDiv.textContent = lines.join('\n');
+    } 
+    else if (data.errors && data.errors.length) {
+      outDiv.textContent = 'Errores:\n' + data.errors.join('\n');
+    } 
+    else {
+      outDiv.textContent = 'No se generó código optimizado.';
+    }
+  })
+  .catch(err => console.error('Error al optimizar:', err));
 }
 
